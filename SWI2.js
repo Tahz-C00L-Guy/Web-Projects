@@ -158,3 +158,58 @@ document.addEventListener('keydown', function(e) {
   panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   window.addEventListener('resize', () => { if (window.innerWidth > 640) closeMenu(); });
 })();
+
+// ============================================================
+// CONTACT FORM — FORMSPREE SUBMISSION
+// ============================================================
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  const status = document.getElementById('form-status');
+  const submitBtn = document.getElementById('form-submit-btn');
+  const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+
+  function showStatus(message, variant) {
+    status.style.display = 'block';
+    status.className = 'form-status form-status-' + variant;
+    status.textContent = message;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
+      showStatus('Form is not yet connected — replace YOUR_FORM_ID in the form action with your real Formspree form ID.', 'error');
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending…'; }
+    showStatus('Sending your enquiry…', 'sending');
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(function (response) {
+        if (response.ok) {
+          form.reset();
+          showStatus("Thank you — your enquiry has been received. Our team will be in touch shortly.", 'success');
+        } else {
+          return response.json().then(function (data) {
+            const msg = (data && data.errors && data.errors.length)
+              ? data.errors.map(function (err) { return err.message; }).join(', ')
+              : 'Something went wrong. Please try again or contact us directly.';
+            showStatus(msg, 'error');
+          });
+        }
+      })
+      .catch(function () {
+        showStatus('Network error — please check your connection and try again, or reach us on WhatsApp.', 'error');
+      })
+      .finally(function () {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText; }
+      });
+  });
+})();
