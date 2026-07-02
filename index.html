@@ -30,9 +30,10 @@
     </div>
   </div>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">Heritage</a></li>
+    <li><a href="#services">Specialisations</a></li>
+    <li><a href="#portfolio">Featured Work</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -41,9 +42,10 @@
   </button>
 </nav>
 <div class="nav-mobile-panel" id="nav-mobile-panel">
-  <a href="#about">About</a>
-  <a href="#services">Services</a>
-  <a href="#portfolio">Portfolio</a>
+  <a href="#hero">Home</a>
+  <a href="#about">Heritage</a>
+  <a href="#services">Specialisations</a>
+  <a href="#portfolio">Featured Work</a>
   <a href="#process">Process</a>
   <a href="#contact">Contact</a>
 </div>
@@ -519,16 +521,16 @@
     </div>
 
     <!-- RIGHT: Form -->
-    <div class="form-wrap">
+    <form class="form-wrap" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <div class="form-row">
-        <div class="fg"><label class="flbl">First Name</label><input class="fi" type="text" placeholder="Ahmad"></div>
-        <div class="fg"><label class="flbl">Last Name</label><input class="fi" type="text" placeholder="Al Mansoori"></div>
+        <div class="fg"><label class="flbl">First Name</label><input class="fi" type="text" name="firstName" placeholder="Ahmad" required></div>
+        <div class="fg"><label class="flbl">Last Name</label><input class="fi" type="text" name="lastName" placeholder="Al Mansoori" required></div>
       </div>
-      <div class="fg"><label class="flbl">Email Address</label><input class="fi" type="email" placeholder="ahmad@example.com"></div>
-      <div class="fg"><label class="flbl">Phone Number</label><input class="fi" type="tel" placeholder="+971 50 000 0000"></div>
+      <div class="fg"><label class="flbl">Email Address</label><input class="fi" type="email" name="email" placeholder="ahmad@example.com" required></div>
+      <div class="fg"><label class="flbl">Phone Number</label><input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000"></div>
       <div class="fg">
         <label class="flbl">Project Type</label>
-        <select class="fi">
+        <select class="fi" name="projectType">
           <option value="">Select a service...</option>
           <option>Gates & Entrances</option>
           <option>Staircases & Railings</option>
@@ -538,11 +540,16 @@
           <option>Custom Commission</option>
         </select>
       </div>
-      <div class="fg"><label class="flbl">Location / Emirate</label><input class="fi" type="text" placeholder="Dubai, Sharjah, Abu Dhabi..."></div>
-      <div class="fg"><label class="flbl">Project Details</label><textarea class="fi" placeholder="Tell us about your vision — dimensions, references, timeline, or any details that will help us understand your commission..."></textarea></div>
-      <button class="form-submit">Send Enquiry &nbsp;→</button>
-    </div>
+      <div class="fg"><label class="flbl">Location / Emirate</label><input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi..."></div>
+      <div class="fg"><label class="flbl">Project Details</label><textarea class="fi" name="message" placeholder="Tell us about your vision — dimensions, references, timeline, or any details that will help us understand your commission..." required></textarea></div>
 
+      <!-- Honeypot spam trap: real users never see or fill this -->
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="_subject" value="New Enquiry — Star Wrought Iron Website">
+
+      <button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry &nbsp;→</button>
+      <div id="form-status" class="form-status" role="status" aria-live="polite" style="display:none"></div>
+    </form>
   </div>
 </section>
 
