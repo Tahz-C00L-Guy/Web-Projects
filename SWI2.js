@@ -142,22 +142,25 @@ document.addEventListener('keydown', function(e) {
 (function () {
   const toggle = document.getElementById('nav-toggle');
   const panel = document.getElementById('nav-mobile-panel');
+  
   if (!toggle || !panel) return;
 
-  function closeMenu() {
-    toggle.classList.remove('open');
-    panel.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-  }
   function toggleMenu() {
     const isOpen = panel.classList.toggle('open');
     toggle.classList.toggle('open', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
   }
+
   toggle.addEventListener('click', toggleMenu);
-  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-  window.addEventListener('resize', () => { if (window.innerWidth > 640) closeMenu(); });
-})
+
+  // Close when clicking links
+  panel.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      panel.classList.remove('open');
+      toggle.classList.remove('open');
+    });
+  });
+})();
 
 // Redirect to Thank You page after form submission
 document.getElementById('contact-form').addEventListener('submit', function() {
