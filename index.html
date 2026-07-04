@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Star Wrought Iron | Premium Ironcraft UAE</title>
+    <meta name="description" content="Star Wrought Iron — bespoke handmade wrought iron gates, staircases, doors, screens and restoration for luxury homes and commercial projects across the UAE since 1990.">
     <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -21,11 +22,11 @@
     </a>
     <!-- Social icons -->
     <div class="nav-social">
-      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <a class="ig" href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>
       </a>
-      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      <a class="fb" href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>
       </a>
     </div>
   </div>
@@ -259,53 +260,13 @@
       <a href="#contact" class="btn-ghost" style="border-color:rgba(181,113,74,0.35);color:var(--copper-dark)">Commission a Piece →</a>
     </div>
 
-    <div class="port-grid">
+    <div class="port-filter-row">
+      <label class="port-filter-label" for="port-filter">Filter by category</label>
+      <select class="port-filter-select" id="port-filter" aria-label="Filter portfolio by category"></select>
+    </div>
 
-      <div class="port-item" onclick="openLightbox(0)" style="cursor:pointer">
-        <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481368/Screenshot_2026-06-26_172522_ala4yd.png" alt="Emirates Hills Villa Gate" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">
-        <div class="port-frame"></div>
-        <div class="port-cat-tag">Residential</div>
-        <div class="port-overlay">
-          <div><div class="port-label-title">Emirates Hills Villa — Grand Entrance Gate</div><div class="port-label-sub">Luxury Residential · Dubai</div></div>
-        </div>
-      </div>
-
-      <div class="port-item" onclick="openLightbox(1)" style="cursor:pointer">
-        <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481366/Screenshot_2026-06-26_172431_sv1wrf.png" alt="Spiral Staircase" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">
-        <div class="port-frame"></div>
-        <div class="port-cat-tag">Commercial</div>
-        <div class="port-overlay">
-          <div><div class="port-label-title">Spiral Staircase & Railing System</div><div class="port-label-sub">Commercial Tower · Abu Dhabi</div></div>
-        </div>
-      </div>
-
-      <div class="port-item" onclick="openLightbox(2)" style="cursor:pointer">
-        <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481365/Screenshot_2026-06-26_172258_ykj2zr.png" alt="Iron Chandelier" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">
-        <div class="port-frame"></div>
-        <div class="port-cat-tag">Décor</div>
-        <div class="port-overlay">
-          <div><div class="port-label-title">Bespoke Iron Chandelier Collection</div><div class="port-label-sub">Interior Décor · Sharjah</div></div>
-        </div>
-      </div>
-
-      <div class="port-item" onclick="openLightbox(3)" style="cursor:pointer">
-        <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171636_ua179j.png" alt="Mashrabiya Screen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">
-        <div class="port-frame"></div>
-        <div class="port-cat-tag">Heritage</div>
-        <div class="port-overlay">
-          <div><div class="port-label-title">Mashrabiya Screen — Heritage Villa</div><div class="port-label-sub">Restoration · Old Dubai</div></div>
-        </div>
-      </div>
-
-      <div class="port-item" onclick="openLightbox(4)" style="cursor:pointer">
-        <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171908_drn5lm.png" alt="Palace Fencing" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">
-        <div class="port-frame"></div>
-        <div class="port-cat-tag">Bespoke</div>
-        <div class="port-overlay">
-          <div><div class="port-label-title">Palace Perimeter Fencing — Custom Commission</div><div class="port-label-sub">Ultra-Luxury · Umm Al Quwain</div></div>
-        </div>
-      </div>
-
+    <div class="port-grid" id="port-grid">
+      <!-- Cards are rendered here by SWI2.js from the `projects` array — see that file to add projects or images -->
     </div>
   </div>
 </section>
@@ -509,7 +470,7 @@
       <!-- MAP -->
       <div class="map-block" style="margin-top:1.5rem">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14380.5!2d55.5536!3d25.5641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f5c6a1d3e5ab%3A0x0!2zVW1tIEFsIFF1d3dhaW4gSW5kdXN0cmlhbCBBcmVh!5e0!3m2!1sen!2sae!4v1"
+          src="https://www.google.com/maps?q=Umm+Al+Quwain+Industrial+Area+Behind+Nissan+Showroom+UAE&output=embed"
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="SWI Workshop — Umm Al Quwain Industrial Area, behind Nissan Showroom">
         </iframe>
@@ -522,17 +483,15 @@
 
     <!-- RIGHT: Form -->
 <form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
-    
-    <!-- Add this line here -->
-    <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/ThankYou.html">
 
-    <!-- Main email(s) -->
-  <input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
+  <!-- Fallback redirect if JavaScript doesn't run — the JS handler below normally
+       intercepts submission and redirects itself once Formspree confirms success. -->
+  <input type="hidden" name="_next" value="ThankYou.html">
+
+  <!-- Sends a copy to this second address, in addition to your primary Formspree account email -->
+  <input type="hidden" name="_cc" value="official@starwroughtiron.ae">
 
   <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
-
-  <!-- Redirect to Thank You page after successful submission -->
-  <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/thank-you.html">
 
   <div class="form-row">
       <div class="fg">
