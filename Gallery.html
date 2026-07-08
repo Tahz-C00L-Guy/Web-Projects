@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wrought &amp; Wren — Ironwork Portfolio</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts: Cormorant Garamond (display/serif) + Inter (body/sans) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    --parchment:#F0E8E0;
+    --off-white:#FAF7F3;
+    --warm-gray:#3E3A36;
+    --warm-gray-soft:#6B655D;
+    --copper:#B5714A;
+    --copper-light:#CE9066;
+    --ink:#241F1B;
+    --line:#DCD1C4;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background-color: var(--off-white);
+    color: var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .font-serif-display{ font-family:'Cormorant Garamond', serif; }
+
+  /* subtle grain / warmth overlay across the page */
+  .grain-bg{
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(181,113,74,0.05), transparent 40%),
+      radial-gradient(circle at 80% 60%, rgba(181,113,74,0.04), transparent 45%);
+  }
+
+  /* ============ Header / filter ============ */
+  .filter-btn{
+    border:1px solid var(--warm-gray);
+    background:transparent;
+    color:var(--warm-gray);
+    letter-spacing:0.04em;
+    transition: all .35s ease;
+  }
+  .filter-btn:hover{
+    border-color: var(--copper);
+    color: var(--copper);
+  }
+  .filter-caret{
+    transition: transform .3s ease;
+  }
+  .filter-caret.open{
+    transform: rotate(180deg);
+  }
+
+  #filterDropdown{
+    opacity:0;
+    transform: translateY(-8px);
+    pointer-events:none;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  #filterDropdown.show{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+  }
+
+  .filter-option{
+    transition: background-color .25s ease, color .25s ease, padding-left .25s ease;
+    border-bottom:1px solid var(--line);
+  }
+  .filter-option:last-child{ border-bottom:none; }
+  .filter-option:hover{
+    background-color: var(--parchment);
+    color: var(--copper);
+    padding-left: 1.75rem;
+  }
+  .filter-option.active{
+    color: var(--copper);
+    font-weight:500;
+  }
+
+  /* ============ Gallery grid (masonry via CSS columns) ============ */
+  .masonry{
+    column-count: 1;
+    column-gap: 1.75rem;
+  }
+  @media (min-width: 768px){
+    .masonry{ column-count: 2; }
+  }
+  @media (min-width: 1100px){
+    .masonry{ column-count: 3; }
+  }
+
+  .gallery-card{
+    break-inside: avoid;
+    margin-bottom: 1.75rem;
+    opacity:0;
+    transform: translateY(18px);
+    animation: cardIn .7s ease forwards;
+  }
+  @keyframes cardIn{
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .card-frame{
+    position:relative;
+    border:1px solid var(--line);
+    padding:.5rem;
+    background: var(--off-white);
+    box-shadow: 0 1px 2px rgba(36,31,27,0.04);
+    transition: transform .5s ease, box-shadow .5s ease, border-color .5s ease;
+    cursor:pointer;
+  }
+  .card-frame:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -18px rgba(36,31,27,0.35);
+    border-color: var(--copper-light);
+  }
+
+  .card-frame .inner-border{
+    position:absolute; inset:.5rem;
+    border:1px solid rgba(181,113,74,0.35);
+    pointer-events:none;
+    z-index:5;
+  }
+
+  .card-img-wrap{
+    position:relative;
+    overflow:hidden;
+  }
+  .card-img-wrap img{
+    width:100%; height:100%; display:block;
+    object-fit:cover;
+    transition: transform 1s cubic-bezier(.2,.7,.2,1);
+    filter: saturate(0.95) contrast(1.02);
+  }
+  .card-frame:hover .card-img-wrap img{
+    transform: scale(1.06);
+  }
+
+  /* dark elegant overlay */
+  .card-overlay{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(36,31,27,0) 35%, rgba(24,20,17,0.88) 100%);
+    opacity:0;
+    transition: opacity .5s ease;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding: 1.25rem;
+  }
+  .card-frame:hover .card-overlay{ opacity:1; }
+
+  .card-overlay .ov-title, .card-overlay .ov-sub{
+    transform: translateY(10px);
+    opacity:0;
+    transition: transform .5s ease .05s, opacity .5s ease .05s;
+  }
+  .card-frame:hover .card-overlay .ov-title,
+  .card-frame:hover .card-overlay .ov-sub{
+    transform: translateY(0);
+    opacity:1;
+  }
+
+  .category-tag{
+    position:absolute; top:.9rem; left:.9rem; z-index:6;
+    background: rgba(240,232,224,0.92);
+    color: var(--copper);
+    border:1px solid var(--copper);
+    font-size:.65rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:.28rem .6rem;
+  }
+
+  /* ============ Lightbox ============ */
+  #lightbox{
+    position:fixed; inset:0; z-index:100;
+    background: rgba(20,17,15,0.94);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden;
+    transition: opacity .4s ease, visibility 0s linear .4s;
+  }
+  #lightbox.open{
+    opacity:1; visibility:visible;
+    transition: opacity .4s ease, visibility 0s linear 0s;
+  }
+  #lightbox .lb-content{
+    transform: scale(.92);
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  #lightbox.open .lb-content{
+    transform: scale(1);
+  }
+
+  .lb-arrow{
+    transition: color .3s ease, transform .3s ease;
+    color: rgba(240,232,224,0.65);
+  }
+  .lb-arrow:hover{ color: var(--copper-light); transform: scale(1.1); }
+
+  .lb-close{
+    color: rgba(240,232,224,0.65);
+    transition: color .3s ease, transform .3s ease;
+  }
+  .lb-close:hover{ color: var(--copper-light); transform: rotate(90deg); }
+
+  .thumb{
+    opacity:.45;
+    border:1px solid transparent;
+    transition: opacity .3s ease, border-color .3s ease;
+    cursor:pointer;
+  }
+  .thumb:hover{ opacity:.8; }
+  .thumb.active{
+    opacity:1;
+    border-color: var(--copper);
+  }
+
+  /* scrollbar tidy for thumb strip */
+  .thumb-strip::-webkit-scrollbar{ height:5px; }
+  .thumb-strip::-webkit-scrollbar-thumb{ background: rgba(181,113,74,.4); }
+
+  /* divider ornament */
+  .ornament{
+    width:44px; height:1px;
+    background: var(--copper);
+    position:relative;
+  }
+  .ornament::before{
+    content:"";
+    position:absolute; left:50%; top:50%;
+    transform: translate(-50%,-50%) rotate(45deg);
+    width:6px; height:6px;
+    border:1px solid var(--copper);
+    background: var(--off-white);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
+</style>
+</head>
+
+<body class="grain-bg">
+
+  <!-- ============ HERO / TOP ============ -->
+  <header class="max-w-7xl mx-auto px-6 md:px-10 pt-14 pb-8">
+    <div class="flex flex-col items-center text-center gap-3 mb-12">
+      <p class="text-xs tracking-[0.3em] uppercase text-[var(--copper)]">Handforged Since 1994</p>
+      <h1 class="font-serif-display text-5xl md:text-6xl italic font-medium text-[var(--warm-gray)]">Wrought &amp; Wren</h1>
+      <div class="ornament my-2"></div>
+      <p class="max-w-xl text-sm md:text-base text-[var(--warm-gray-soft)] font-light leading-relaxed">
+        A curated collection of gates, stairways, and fine metalwork —
+        each piece shaped by hand, fire, and patience.
+      </p>
+    </div>
+
+    <!-- Filter -->
+    <div class="relative flex items-center justify-start mb-4" id="filterWrap">
+      <button id="filterBtn" class="filter-btn flex items-center gap-2 px-5 py-2.5 text-sm uppercase tracking-widest">
+        <span id="filterLabel">All Projects</span>
+        <svg class="filter-caret w-3 h-3" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div id="filterDropdown" class="absolute top-full left-0 mt-2 w-64 bg-[var(--off-white)] border border-[var(--line)] shadow-xl z-20">
+        <button class="filter-option active w-full text-left px-6 py-3 text-sm" data-cat="All Projects">All Projects</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Gates & Entrances">Gates &amp; Entrances</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Staircases & Railings">Staircases &amp; Railings</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Doors & Screens">Doors &amp; Screens</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Furniture & Décor">Furniture &amp; Décor</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Restoration">Restoration</button>
+        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Custom Commissions">Custom Commissions</button>
+      </div>
+    </div>
+    <div class="w-full h-px bg-[var(--line)]"></div>
+  </header>
+
+  <!-- ============ GALLERY ============ -->
+  <main class="max-w-7xl mx-auto px-6 md:px-10 pb-24">
+    <div id="gallery" class="masonry"></div>
+  </main>
+
+  <footer class="text-center py-10 text-xs tracking-widest uppercase text-[var(--warm-gray-soft)] border-t border-[var(--line)]">
+    &copy; 2026 Wrought &amp; Wren Ironworks — Crafted by hand, one commission at a time.
+  </footer>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div id="lightbox">
+    <button id="lbClose" class="lb-close absolute top-6 right-6 md:top-8 md:right-10 z-20" aria-label="Close">
+      <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none"><path d="M4 4L20 20M20 4L4 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+
+    <button id="lbPrev" class="lb-arrow absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
+      <svg class="w-9 h-9 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="lbNext" class="lb-arrow absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
+      <svg class="w-9 h-9 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="lb-content w-full max-w-5xl mx-4 md:mx-auto flex flex-col items-center">
+      <div class="w-full flex items-center justify-center mb-4 md:mb-6" style="height:52vh;">
+        <img id="lbImage" src="" alt="" class="max-h-full max-w-full object-contain border border-[rgba(240,232,224,0.15)]">
+      </div>
+
+      <div class="text-center px-4 mb-4">
+        <p id="lbCategory" class="text-[var(--copper-light)] text-xs uppercase tracking-[0.25em] mb-2"></p>
+        <h2 id="lbTitle" class="font-serif-display italic text-3xl md:text-4xl text-[var(--parchment)] mb-1"></h2>
+        <p id="lbSub" class="text-[rgba(240,232,224,0.6)] text-sm mb-3 font-light"></p>
+        <p id="lbDesc" class="text-[rgba(240,232,224,0.75)] text-sm max-w-xl mx-auto leading-relaxed font-light"></p>
+      </div>
+
+      <div id="thumbStrip" class="thumb-strip flex gap-3 overflow-x-auto max-w-full px-4 pb-2"></div>
+    </div>
+  </div>
+
+<script>
+/* ==========================================================
+   DATA — 10 sample commissions across the six categories.
+   Each project: title, subtitle, category, description, images[]
+   ========================================================== */
+const projects = [
+  {
+    title: "The Ashcombe Gate",
+    subtitle: "Private Estate, Hampshire",
+    category: "Gates & Entrances",
+    description: "A pair of hand-riveted entrance gates featuring scrolled acanthus finials, forged in a single continuous run to preserve the grain of the iron.",
+    images: [10,20,30]
+  },
+  {
+    title: "Helix Stair Rail",
+    subtitle: "Coastal Residence, Maine",
+    category: "Staircases & Railings",
+    description: "A spiralling balustrade of twisted square-bar iron, finished in a soft graphite patina to complement whitewashed oak treads.",
+    images: [40,41,42,43]
+  },
+  {
+    title: "Linden Screen Door",
+    subtitle: "Garden Folly, Provence",
+    category: "Doors & Screens",
+    description: "A lattice screen door inspired by pruned linden branches, allowing dappled light while framing the orchard beyond.",
+    images: [50,51,52]
+  },
+  {
+    title: "Ember Console Table",
+    subtitle: "Study Commission, London",
+    category: "Furniture & Décor",
+    description: "A slender console with a hand-hammered top and tapered legs, its surface finished in warm blackened wax.",
+    images: [60,61]
+  },
+  {
+    title: "Cathedral Hinge Restoration",
+    subtitle: "17th-Century Chapel, Yorkshire",
+    category: "Restoration",
+    description: "Full conservation of the original strap hinges, cleaned of two centuries of rust and re-tempered without losing their hand-hammered texture.",
+    images: [70,71,72]
+  },
+  {
+    title: "The Wren Balcony",
+    subtitle: "Custom Commission, Charleston",
+    category: "Custom Commissions",
+    description: "A curved Juliet balcony designed around a client's sketch of nesting wrens, forged with hidden perches along the lower rail.",
+    images: [80,81,82,83]
+  },
+  {
+    title: "Meridian Courtyard Gate",
+    subtitle: "Vineyard Entrance, Sonoma",
+    category: "Gates & Entrances",
+    description: "Twin swinging gates with a sunburst motif, sized to frame the vineyard's central allée of olive trees.",
+    images: [90,91,92]
+  },
+  {
+    title: "Orsay Spiral Staircase",
+    subtitle: "Loft Conversion, Paris",
+    category: "Staircases & Railings",
+    description: "A compact spiral stair with a continuous ribbon handrail, engineered to fit within a 1.4-metre footprint.",
+    images: [100,101,102]
+  },
+  {
+    title: "Foundry Fire Screen",
+    subtitle: "Manor Drawing Room, Bath",
+    category: "Furniture & Décor",
+    description: "A folding fire screen with pierced flame motifs, designed to cast warm shadow patterns across the hearthstones.",
+    images: [110,111]
+  },
+  {
+    title: "Abbot's Gate Reforging",
+    subtitle: "Monastery Restoration, Umbria",
+    category: "Restoration",
+    description: "Reforging of a 15th-century monastery gate using salvaged iron, replicating the original hand-forged rivet pattern.",
+    images: [120,121,122]
+  },
+  {
+    title: "Sable Room Divider",
+    subtitle: "Custom Commission, New York",
+    category: "Custom Commissions",
+    description: "A free-standing screen of interlocking iron rings, designed to soften an open-plan apartment without closing it off.",
+    images: [130,131,132]
+  },
+  {
+    title: "Larkspur Garden Door",
+    subtitle: "Walled Garden, Cotswolds",
+    category: "Doors & Screens",
+    description: "A narrow garden door with a floral piercing pattern echoing the larkspur beds planted along the boundary wall.",
+    images: [140,141]
+  }
+];
+
+/* Build a full image URL from a picsum id */
+function imgUrl(id, w=800, h=600){
+  return `https://picsum.photos/id/${id}/${w}/${h}`;
+}
+
+/* ==========================================================
+   RENDER GALLERY
+   ========================================================== */
+const galleryEl = document.getElementById('gallery');
+let currentFilter = "All Projects";
+
+function renderGallery(){
+  galleryEl.innerHTML = "";
+  const list = projects.filter(p => currentFilter === "All Projects" || p.category === currentFilter);
+
+  list.forEach((project, idx) => {
+    const card = document.createElement('div');
+    card.className = "gallery-card";
+    card.style.animationDelay = `${idx * 0.06}s`;
+
+    card.innerHTML = `
+      <div class="card-frame" data-project-index="${projects.indexOf(project)}">
+        <span class="category-tag">${project.category}</span>
+        <div class="card-img-wrap">
+          <img src="${imgUrl(project.images[0])}" alt="${project.title}" loading="lazy">
+          <div class="card-overlay">
+            <p class="ov-title font-serif-display italic text-2xl text-[var(--parchment)]">${project.title}</p>
+            <p class="ov-sub text-xs tracking-wide text-[rgba(240,232,224,0.75)] mt-1">${project.subtitle}</p>
+          </div>
+        </div>
+        <div class="inner-border"></div>
+      </div>
+    `;
+    galleryEl.appendChild(card);
+  });
+
+  // attach click listeners to open lightbox
+  document.querySelectorAll('.card-frame').forEach(el => {
+    el.addEventListener('click', () => {
+      const pIndex = parseInt(el.getAttribute('data-project-index'));
+      openLightbox(pIndex, 0);
+    });
+  });
+}
+
+/* ==========================================================
+   FILTER DROPDOWN
+   ========================================================== */
+const filterBtn = document.getElementById('filterBtn');
+const filterDropdown = document.getElementById('filterDropdown');
+const filterCaret = document.querySelector('.filter-caret');
+const filterLabel = document.getElementById('filterLabel');
+
+filterBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  filterDropdown.classList.toggle('show');
+  filterCaret.classList.toggle('open');
+});
+
+document.querySelectorAll('.filter-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    currentFilter = opt.getAttribute('data-cat');
+    filterLabel.textContent = currentFilter;
+
+    document.querySelectorAll('.filter-option').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+
+    filterDropdown.classList.remove('show');
+    filterCaret.classList.remove('open');
+    renderGallery();
+  });
+});
+
+// close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('filterWrap').contains(e.target)){
+    filterDropdown.classList.remove('show');
+    filterCaret.classList.remove('open');
+  }
+});
+
+/* ==========================================================
+   LIGHTBOX
+   ========================================================== */
+const lightbox = document.getElementById('lightbox');
+const lbImage = document.getElementById('lbImage');
+const lbTitle = document.getElementById('lbTitle');
+const lbSub = document.getElementById('lbSub');
+const lbCategory = document.getElementById('lbCategory');
+const lbDesc = document.getElementById('lbDesc');
+const thumbStrip = document.getElementById('thumbStrip');
+
+let activeProjectIndex = 0;
+let activeImageIndex = 0;
+
+function openLightbox(projectIndex, imageIndex){
+  activeProjectIndex = projectIndex;
+  activeImageIndex = imageIndex;
+  updateLightboxContent();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updateLightboxContent(){
+  const project = projects[activeProjectIndex];
+  const imgId = project.images[activeImageIndex];
+
+  lbImage.src = imgUrl(imgId, 1400, 1000);
+  lbImage.alt = project.title;
+  lbTitle.textContent = project.title;
+  lbSub.textContent = project.subtitle;
+  lbCategory.textContent = project.category;
+  lbDesc.textContent = project.description;
+
+  // build thumbnail strip
+  thumbStrip.innerHTML = "";
+  project.images.forEach((id, i) => {
+    const thumb = document.createElement('img');
+    thumb.src = imgUrl(id, 160, 120);
+    thumb.className = `thumb w-20 h-14 object-cover flex-shrink-0 ${i === activeImageIndex ? 'active' : ''}`;
+    thumb.addEventListener('click', () => {
+      activeImageIndex = i;
+      updateLightboxContent();
+    });
+    thumbStrip.appendChild(thumb);
+  });
+}
+
+function showNextImage(){
+  const project = projects[activeProjectIndex];
+  activeImageIndex = (activeImageIndex + 1) % project.images.length;
+  updateLightboxContent();
+}
+
+function showPrevImage(){
+  const project = projects[activeProjectIndex];
+  activeImageIndex = (activeImageIndex - 1 + project.images.length) % project.images.length;
+  updateLightboxContent();
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbNext').addEventListener('click', showNextImage);
+document.getElementById('lbPrev').addEventListener('click', showPrevImage);
+
+// click outside image content closes lightbox
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+// keyboard support
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') showNextImage();
+  if (e.key === 'ArrowLeft') showPrevImage();
+});
+
+/* ==========================================================
+   INIT
+   ========================================================== */
+renderGallery();
+</script>
+
+</body>
+</html>
