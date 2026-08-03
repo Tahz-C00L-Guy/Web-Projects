@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Love Blooms 🌸</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, #2b2140 0%, #1a1330 45%, #0d0a1a 100%);
+    font-family: 'Georgia', 'Palatino Linotype', serif;
+    touch-action: manipulation;
+  }
+
+  canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: crosshair;
+  }
+
+  #overlay {
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 235, 245, 0.85);
+    font-size: clamp(16px, 4vw, 28px);
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(255, 180, 220, 0.4), 0 0 2px rgba(0,0,0,0.5);
+    pointer-events: none;
+    user-select: none;
+    animation: floatText 5s ease-in-out infinite;
+    z-index: 10;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  @keyframes floatText {
+    0%, 100% { transform: translateX(-50%) translateY(0px); opacity: 0.85; }
+    50% { transform: translateX(-50%) translateY(-8px); opacity: 1; }
+  }
+
+  #hint {
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 235, 245, 0.35);
+    font-size: clamp(11px, 2.5vw, 14px);
+    letter-spacing: 1px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 10;
+    font-style: italic;
+  }
+
+  /* soft ambient sparkle dots */
+  .sparkle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    pointer-events: none;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.7; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="garden"></canvas>
+<div id="overlay">Click anywhere and watch my love bloom 💐</div>
+<div id="hint">tap • click • anywhere</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('garden');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ---------- ambient sparkles ----------
+  const sparkleContainer = document.body;
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const size = Math.random() * 2 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top = Math.random() * 100 + 'vh';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    sparkleContainer.appendChild(s);
+  }
+
+  // ---------- utility ----------
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  // pastel + jewel-tone palette pairs (petal color, center color)
+  const palettes = [
+    ['#ffb6d9', '#ffe27a'],
+    ['#c9a8ff', '#fff2b8'],
+    ['#ff9ecb', '#fff6d5'],
+    ['#a0e7e5', '#fff2b0'],
+    ['#ffd6a5', '#ff7a7a'],
+    ['#b8f2e6', '#ffd6ec'],
+    ['#f6a6ff', '#fff5a0'],
+    ['#fca5c8', '#ffffff'],
+    ['#9ad0ff', '#fff9c4'],
+    ['#ffe5a0', '#ff8fa3'],
+    ['#e0aaff', '#ffe8ac'],
+    ['#ff8fab', '#ffe66d']
+  ];
+
+  const stemColor = '#7fbf7f';
+  const stemColorDark = '#4f8f5f';
+
+  // ---------- flower object ----------
+  class Flower {
+    constructor(x, y) {
+      this.x = x;
+      this.groundY = y;
+      this.size = rand(0.7, 1.35);              // overall scale
+      this.stemHeight = rand(70, 150) * this.size;
+      this.petalCount = Math.floor(rand(5, 10));
+      const pal = pick(palettes);
+      this.petalColor = pal[0];
+      this.centerColor = pal[1];
+      // slight hue jitter for uniqueness
+      this.petalColor = jitterColor(this.petalColor);
+      this.sway = rand(-1, 1) * 0.4;
+      this.swaySeed = rand(0, Math.PI * 2);
+      this.petalShape = pick(['round', 'pointed', 'heart']);
+      this.rotation = rand(0, Math.PI * 2);
+
+      // animation state
+      this.stemProgress = 0;     // 0 -> 1 stem growing
+      this.bloomProgress = 0;    // 0 -> 1 petals opening
+      this.leafProgress = 0;
+      this.stemDuration = rand(45, 65);   // frames
+      this.bloomDuration = rand(35, 55);
+      this.frame = 0;
+      this.leaves = [
+        { side: -1, t: rand(0.35, 0.55), size: rand(0.7, 1.1) },
+        { side: 1, t: rand(0.5, 0.7), size: rand(0.7, 1.1) }
+      ];
+      this.done = false;
+      this.swayPhaseOffset = rand(0, 1000);
+    }
+
+    update() {
+      this.frame++;
+      if (this.stemProgress < 1) {
+        this.stemProgress = Math.min(1, this.stemProgress + 1 / this.stemDuration);
+        // ease out
+      } else if (this.bloomProgress < 1) {
+        this.bloomProgress = Math.min(1, this.bloomProgress + 1 / this.bloomDuration);
+      } else {
+        this.done = true;
+      }
+      // leaves pop slightly after stem starts
+      this.leafProgress = Math.min(1, this.stemProgress * 1.3);
+    }
+
+    draw(ctx, time) {
+      const ease = t => 1 - Math.pow(1 - t, 3); // ease-out cubic
+      const stemT = ease(this.stemProgress);
+      const curStemH = this.stemHeight * stemT;
+
+      const windSway = Math.sin(time * 0.0012 + this.swayPhaseOffset) * 6 * (0.3 + 0.7 * this.bloomProgress);
+      const topX = this.x + windSway + this.sway * curStemH * 0.15;
+      const topY = this.groundY - curStemH;
+
+      // ---- stem (bezier curve for gentle bend) ----
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = stemColorDark;
+      ctx.lineWidth = 4.5 * this.size;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.groundY);
+      const ctrlX = this.x + windSway * 0.5 + this.sway * curStemH * 0.3;
+      const ctrlY = this.groundY - curStemH * 0.55;
+      ctx.quadraticCurveTo(ctrlX, ctrlY, topX, topY);
+      ctx.stroke();
+
+      ctx.strokeStyle = stemColor;
+      ctx.lineWidth = 2.5 * this.size;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.groundY);
+      ctx.quadraticCurveTo(ctrlX, ctrlY, topX, topY);
+      ctx.stroke();
+
+      // ---- leaves ----
+      this.leaves.forEach(leaf => {
+        if (this.leafProgress <= 0) return;
+        const t = leaf.t;
+        // point along the stem curve
+        const lx = (1 - t) * (1 - t) * this.x + 2 * (1 - t) * t * ctrlX + t * t * topX;
+        const ly = (1 - t) * (1 - t) * this.groundY + 2 * (1 - t) * t * ctrlY + t * t * topY;
+        const lp = ease(Math.min(1, this.leafProgress));
+        drawLeaf(ctx, lx, ly, leaf.side, leaf.size * this.size * lp);
+      });
+      ctx.restore();
+
+      // ---- flower head ----
+      if (this.stemProgress >= 1 || stemT > 0.85) {
+        const bloomT = ease(this.bloomProgress);
+        drawFlowerHead(ctx, topX, topY, this, bloomT, time);
+      }
+    }
+  }
+
+  function drawLeaf(ctx, x, y, side, scale) {
+    if (scale <= 0) return;
+    ctx.save();
+    ctx.translate(x, y);
+    const len = 18 * scale;
+    const wid = 9 * scale;
+    ctx.rotate(side * 0.6);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(side * len * 0.6, -wid, side * len, 0);
+    ctx.quadraticCurveTo(side * len * 0.6, wid, 0, 0);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, -wid, side * len, wid);
+    grad.addColorStop(0, '#6bbf6b');
+    grad.addColorStop(1, '#3f8a4f');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function jitterColor(hex) {
+    // parse hex, jitter each channel slightly for uniqueness
+    const r = parseInt(hex.substr(1,2),16);
+    const g = parseInt(hex.substr(3,2),16);
+    const b = parseInt(hex.substr(5,2),16);
+    const j = () => Math.max(0, Math.min(255, Math.round(rand(-18, 18))));
+    const nr = Math.max(0, Math.min(255, r + j()));
+    const ng = Math.max(0, Math.min(255, g + j()));
+    const nb = Math.max(0, Math.min(255, b + j()));
+    return `rgb(${nr},${ng},${nb})`;
+  }
+
+  function shade(rgbStr, amt) {
+    // rgbStr like 'rgb(r,g,b)' -> lighten/darken
+    const m = rgbStr.match(/\d+/g);
+    if (!m) return rgbStr;
+    let [r,g,b] = m.map(Number);
+    r = Math.max(0, Math.min(255, r + amt));
+    g = Math.max(0, Math.min(255, g + amt));
+    b = Math.max(0, Math.min(255, b + amt));
+    return `rgb(${r},${g},${b})`;
+  }
+
+  function drawFlowerHead(ctx, cx, cy, flower, bloomT, time) {
+    if (bloomT <= 0) return;
+    const baseR = 16 * flower.size;
+    const petalLen = baseR * (0.9 + bloomT * 1.1);
+    const petalW = baseR * (0.55 + bloomT * 0.5);
+    const count = flower.petalCount;
+    const wobble = Math.sin(time * 0.002 + flower.swayPhaseOffset) * 0.03;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(flower.rotation + wobble);
+
+    // soft glow behind flower
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, petalLen * 1.6);
+    glow.addColorStop(0, hexToRgba(flower.petalColor, 0.18 * bloomT));
+    glow.addColorStop(1, hexToRgba(flower.petalColor, 0));
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, 0, petalLen * 1.6, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 / count) * i;
+      const openAngle = angle; // petals open outward, curl in initially
+      const curl = 1 - bloomT; // 0 = fully open
+      ctx.save();
+      ctx.rotate(openAngle);
+      const dist = petalLen * (0.35 + 0.65 * bloomT);
+      ctx.translate(0, -dist * 0.35);
+      ctx.scale(1, 1 - curl * 0.5);
+
+      drawPetal(ctx, petalW * (0.5 + bloomT*0.5), petalLen * bloomT, flower.petalColor, flower.petalShape);
+      ctx.restore();
+    }
+
+    // center
+    const centerR = baseR * 0.55 * (0.4 + bloomT * 0.6);
+    const cGrad = ctx.createRadialGradient(-centerR*0.3, -centerR*0.3, 1, 0, 0, centerR);
+    cGrad.addColorStop(0, shadeHex(flower.centerColor, 30));
+    cGrad.addColorStop(1, flower.centerColor);
+    ctx.beginPath();
+    ctx.arc(0, 0, centerR, 0, Math.PI * 2);
+    ctx.fillStyle = cGrad;
+    ctx.fill();
+
+    // tiny pixel-ish texture dots on center for cute soft-pixel feel
+    if (bloomT > 0.4) {
+      const dotCount = 6;
+      for (let i = 0; i < dotCount; i++) {
+        const a = (Math.PI * 2 / dotCount) * i + flower.rotation;
+        const r = centerR * 0.5;
+        ctx.beginPath();
+        ctx.arc(Math.cos(a) * r, Math.sin(a) * r, centerR * 0.12, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fill();
+      }
+    }
+
+    ctx.restore();
+  }
+
+  function drawPetal(ctx, w, len, color, shape) {
+    ctx.beginPath();
+    if (shape === 'pointed') {
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(-w, -len * 0.5, 0, -len);
+      ctx.quadraticCurveTo(w, -len * 0.5, 0, 0);
+    } else if (shape === 'heart') {
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-w * 1.3, -len * 0.4, -w * 0.6, -len * 1.05, 0, -len * 0.75);
+      ctx.bezierCurveTo(w * 0.6, -len * 1.05, w * 1.3, -len * 0.4, 0, 0);
+    } else { // round
+      ctx.ellipse(0, -len * 0.5, w, len * 0.55, 0, 0, Math.PI * 2);
+    }
+    ctx.closePath();
+
+    const grad = ctx.createLinearGradient(0, 0, 0, -len);
+    grad.addColorStop(0, shade(color, -10));
+    grad.addColorStop(1, shade(color, 35));
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // soft edge stroke for gentle pixel/cutout look
+    ctx.strokeStyle = hexToRgba('#ffffff', 0.25);
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
+  function hexToRgba(color, alpha) {
+    // supports 'rgb(r,g,b)' or hex
+    if (color.startsWith('rgb')) {
+      const m = color.match(/\d+/g);
+      return `rgba(${m[0]},${m[1]},${m[2]},${alpha})`;
+    }
+    const r = parseInt(color.substr(1,2),16);
+    const g = parseInt(color.substr(3,2),16);
+    const b = parseInt(color.substr(5,2),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function shadeHex(color, amt) {
+    if (color.startsWith('rgb')) return shade(color, amt);
+    const r = parseInt(color.substr(1,2),16);
+    const g = parseInt(color.substr(3,2),16);
+    const b = parseInt(color.substr(5,2),16);
+    return shade(`rgb(${r},${g},${b})`, amt);
+  }
+
+  // ---------- garden state ----------
+  let flowers = [];
+  const MAX_FLOWERS = 60;
+
+  function spawnFlower(x, y) {
+    if (flowers.length >= MAX_FLOWERS) {
+      flowers.shift(); // remove oldest to keep perf smooth
+    }
+    flowers.push(new Flower(x, y));
+    spawnClickBurst(x, y);
+  }
+
+  // small sparkle burst on click
+  let bursts = [];
+  function spawnClickBurst(x, y) {
+    const particles = [];
+    const n = 10;
+    for (let i = 0; i < n; i++) {
+      const a = (Math.PI * 2 / n) * i + rand(-0.2, 0.2);
+      particles.push({
+        x, y,
+        vx: Math.cos(a) * rand(1, 3),
+        vy: Math.sin(a) * rand(1, 3),
+        life: 1,
+        color: pick(['#fff6c9', '#ffd6ec', '#c9f7ff'])
+      });
+    }
+    bursts.push(particles);
+  }
+
+  function updateDrawBursts() {
+    bursts.forEach(particles => {
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.03;
+        p.life -= 0.025;
+        if (p.life > 0) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 2.2 * p.life, 0, Math.PI * 2);
+          ctx.fillStyle = hexToRgba(p.color, p.life);
+          ctx.fill();
+        }
+      });
+    });
+    bursts = bursts.filter(particles => particles.some(p => p.life > 0));
+  }
+
+  // ---------- interaction ----------
+  function handlePointer(clientX, clientY) {
+    spawnFlower(clientX, clientY);
+  }
+
+  canvas.addEventListener('click', (e) => {
+    handlePointer(e.clientX, e.clientY);
+  });
+
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    for (const t of e.changedTouches) {
+      handlePointer(t.clientX, t.clientY);
+    }
+  }, { passive: false });
+
+  // ---------- render loop ----------
+  function animate(time) {
+    ctx.clearRect(0, 0, W, H);
+
+    // draw ground shadow gradient near bottom for depth (subtle)
+    const groundGrad = ctx.createLinearGradient(0, H - 40, 0, H);
+    groundGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    groundGrad.addColorStop(1, 'rgba(0,0,0,0.15)');
+    ctx.fillStyle = groundGrad;
+    ctx.fillRect(0, H - 40, W, 40);
+
+    flowers.forEach(f => {
+      f.update();
+      f.draw(ctx, time);
+    });
+
+    updateDrawBursts();
+
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  // seed one gentle flower at start so the page doesn't feel empty (optional, subtle)
+  setTimeout(() => {
+    spawnFlower(W * 0.5, H * 0.72);
+  }, 600);
+
+})();
+</script>
+</body>
+</html>
