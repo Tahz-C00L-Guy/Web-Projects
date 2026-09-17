@@ -7,7 +7,7 @@ const projects = [
   {
     title: "Emirates Hills Villa — Grand Entrance Gate",
     subtitle: "Luxury Residential · Dubai",
-    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    desc: "A twin-leaf driveway gate forged for a private Emirates Hills estate, built around a scrolled centrepiece and hand-riveted collars. Solid steel box sections carry the structural load while the ornamental scrollwork was shaped cold, piece by piece, to keep the lines crisp. Finished in a bronze-black powder coat with a hand-rubbed copper highlight to match the villa\u2019s façade ironwork.",
     images: [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481368/Screenshot_2026-06-26_172522_ala4yd.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481366/Screenshot_2026-06-26_172454_xzwh8v.png",
@@ -17,7 +17,7 @@ const projects = [
   {
     title: "Spiral Staircase & Railing System",
     subtitle: "Commercial Tower · Abu Dhabi",
-    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    desc: "A full-height spiral staircase and balustrade system installed in a commercial tower lobby in Abu Dhabi. Engineered for daily foot traffic, the stringer and treads are welded from structural steel with a continuous handrail rolled in one piece for a seamless finish. Balusters were laser-cut to a simplified scrollwork pattern to echo the brand\u2019s heritage motifs without overwhelming the modern interior.",
     images: [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481366/Screenshot_2026-06-26_172431_sv1wrf.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481365/Screenshot_2026-06-26_172318_v09gru.png",
@@ -27,7 +27,7 @@ const projects = [
   {
     title: "Bespoke Iron Chandelier Collection",
     subtitle: "Interior Décor · Sharjah",
-    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    desc: "A collection of custom chandeliers for a Sharjah interior fit-out, combining wrought-iron frames with cast detailing at the arms and finials. Each fixture was designed to the client\u2019s ceiling height and room proportions, hand-forged in-house, then hand-wired and fitted on site. Delivered as a matched set across the majlis and dining hall for a consistent, layered lighting scheme.",
     images: [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481365/Screenshot_2026-06-26_172258_ykj2zr.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171612_novzmk.png",
@@ -37,7 +37,7 @@ const projects = [
   {
     title: "Mashrabiya Screen — Heritage Villa",
     subtitle: "Restoration · Old Dubai",
-    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    desc: "Restoration of an original Mashrabiya-style screen on a heritage villa in Old Dubai. The brief called for preserving the existing geometric lattice pattern while replacing corroded sections and reinforcing the frame for long-term durability. Panels were removed, cleaned back to bare metal, repaired, and re-hung with a protective coating matched to the original patina.",
     images: [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171636_ua179j.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_172141_bsrojb.png",
@@ -47,7 +47,7 @@ const projects = [
   {
     title: "Palace Perimeter Fencing — Custom Commission",
     subtitle: "Ultra-Luxury · Umm Al Quwain",
-    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    desc: "A large-scale perimeter fencing commission for a private estate in Umm Al Quwain, spanning several hundred metres of boundary line. Cast aluminum post caps and CNC-cut infill panels were paired with a wrought-iron top rail to balance longevity in the coastal climate with the client\u2019s request for a traditional silhouette. Installed in phases alongside the estate\u2019s main gate.",
     images: [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171908_drn5lm.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171553_iztnsw.png"
@@ -61,7 +61,7 @@ const projects = [
 let currentProject = null;
 let currentImg = 0;
 
-function openLightbox(index) {
+function openLightbox(index, imgIndex) {
   const p = projects[index];
   currentProject = p;
   currentImg = 0;
@@ -69,7 +69,7 @@ function openLightbox(index) {
   document.getElementById('lb-subtitle').textContent = p.subtitle;
   document.getElementById('lb-desc').textContent = p.desc;
   renderThumbs(p);
-  showImage(0);
+  showImage(imgIndex || 0);
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -141,36 +141,40 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
-// GALLERY PAGE — FULL GRID RENDER
-// Builds the gallery.html grid directly from the `projects` array
-// above, so there is a single source of truth for project data.
-// No-ops safely if #gallery-grid isn't present on the page.
+// GALLERY PAGE — INSTAGRAM-STYLE GRID RENDER
+// Flattens every image across every project into one uniform,
+// square-tile grid (Instagram profile-grid style). Each tile
+// still opens the shared lightbox, positioned to the exact
+// image that was clicked, so `projects` stays the single
+// source of truth for project data. No-ops safely if
+// #gallery-grid isn't present on the page.
 // ============================================================
 function renderGalleryGrid() {
   const grid = document.getElementById('gallery-grid');
   if (!grid) return;
   grid.innerHTML = '';
-  projects.forEach((p, i) => {
-    const cover = (p.images && p.images.length) ? p.images[0] : '';
-    const tag = (p.subtitle || '').split('·')[0].trim();
-    const tile = document.createElement('div');
-    tile.className = 'port-item gallery-tile';
-    tile.setAttribute('role', 'button');
-    tile.setAttribute('tabindex', '0');
-    tile.setAttribute('aria-label', 'Open ' + p.title + ' in lightbox');
-    tile.innerHTML =
-      '<img src="' + cover + '" alt="' + p.title + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85">' +
-      '<div class="port-frame"></div>' +
-      '<div class="port-cat-tag">' + tag + '</div>' +
-      '<div class="port-overlay"><div>' +
-        '<div class="port-label-title">' + p.title + '</div>' +
-        '<div class="port-label-sub">' + p.subtitle + '</div>' +
-      '</div></div>';
-    tile.addEventListener('click', () => openLightbox(i));
-    tile.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+  projects.forEach((p, pIdx) => {
+    const imgs = (p.images && p.images.length) ? p.images : [''];
+    imgs.forEach((src, iIdx) => {
+      const tile = document.createElement('div');
+      tile.className = 'ig-tile';
+      tile.setAttribute('role', 'button');
+      tile.setAttribute('tabindex', '0');
+      tile.setAttribute('aria-label', 'Open ' + p.title + ' image ' + (iIdx + 1) + ' in lightbox');
+      tile.innerHTML =
+        '<img src="' + src + '" alt="' + p.title + '" loading="lazy">' +
+        '<div class="ig-tile-overlay">' +
+          '<svg class="ig-tile-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
+            '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="ig-tile-caption">' + p.title + '</div>';
+      tile.addEventListener('click', () => openLightbox(pIdx, iIdx));
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(pIdx, iIdx); }
+      });
+      grid.appendChild(tile);
     });
-    grid.appendChild(tile);
   });
 }
 document.addEventListener('DOMContentLoaded', renderGalleryGrid);
