@@ -7,77 +7,46 @@
     <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Gallery-page-only styles. Kept local to this file (rather than
-         editing SWI2.css) — all values reuse the design tokens and
-         classes already defined in SWI2.css for full consistency. -->
+    <!-- === FONTS & SITE STYLES === -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="SWI2.css" rel="stylesheet">
+
+    <!-- Gallery-page-only styles: just the featured carousel. The hero,
+         the decorative copper shapes and the Instagram grid now live in
+         SWI2.css so both pages share one design system. -->
     <style>
-      /* --- Image hero banner --- */
-      .gallery-banner {
-        position: relative;
-        min-height: 58vh;
-        display: flex; align-items: center; justify-content: center;
-        text-align: center; overflow: hidden;
-        background: var(--forge);
-      }
-      .gallery-banner-img {
-        position: absolute; inset: 0;
-        width: 100%; height: 100%; object-fit: cover;
-        opacity: 0.55; filter: saturate(0.9) contrast(1.05);
-      }
-      .gallery-banner-overlay {
-        position: absolute; inset: 0;
-        background: linear-gradient(180deg, rgba(26,20,16,0.5) 0%, rgba(26,20,16,0.78) 60%, var(--forge) 100%);
-      }
-      .gallery-banner-content { position: relative; z-index: 1; padding: 8rem 2rem 5rem; max-width: 760px; }
-      .gallery-banner-title {
-        font-family: var(--ff-display); font-weight: 300;
-        font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1.05;
-        color: var(--parchment); margin: 0.7rem 0 1.1rem; letter-spacing: -0.01em;
-      }
-      .gallery-banner-title em { font-style: italic; color: var(--gold); }
-      .gallery-banner-tag {
-        font-family: var(--ff-display); font-style: italic; font-weight: 300;
-        font-size: clamp(1rem, 2vw, 1.15rem); color: rgba(201,160,122,0.75);
-        max-width: 520px; margin: 0 auto;
-      }
-
-      /* --- Compact gallery grid (smaller tiles, more per row) --- */
-      #gallery-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
-      #gallery-grid .port-item { aspect-ratio: 1 / 1; }
-      #gallery-grid .port-label-title { font-size: 0.85rem; }
-      #gallery-grid .port-label-sub { font-size: 0.54rem; }
-      #gallery-grid .port-overlay { padding: 0.9rem; }
-      #gallery-grid .port-cat-tag { font-size: 0.52rem; padding: 2px 6px; }
-
-      /* --- Featured carousel --- */
       .gallery-carousel { background: var(--forge); padding: 6rem 2rem; }
       .carousel-header { text-align: center; margin-bottom: 2.6rem; }
       .carousel-header .eyebrow { justify-content: center; }
       .carousel-frame {
-        position: relative; max-width: 820px; margin: 0 auto;
+        position: relative; max-width: 860px; margin: 0 auto;
         aspect-ratio: 16 / 9; overflow: hidden; cursor: pointer;
-        border: 1px solid rgba(181,113,74,0.2); background: var(--forge-light);
+        border-radius: 16px;
+        border: 1px solid rgba(181,113,74,0.18);
+        background: var(--forge-light);
+        box-shadow: 0 24px 60px -30px rgba(0,0,0,0.8);
       }
       .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease); }
       .carousel-slide.active { opacity: 1; }
       .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
       .carousel-slide-caption {
-        position: absolute; left: 0; right: 0; bottom: 0; padding: 1.4rem 1.6rem;
+        position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem 1.8rem;
         background: linear-gradient(to top, rgba(26,20,16,0.92), transparent);
       }
-      .carousel-slide-caption .cs-title { font-family: var(--ff-display); color: var(--parchment); font-size: 1.2rem; }
+      .carousel-slide-caption .cs-title { font-family: var(--ff-display); color: var(--parchment); font-size: 1.25rem; }
       .carousel-slide-caption .cs-sub { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
       .carousel-arrow {
         position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
-        width: 42px; height: 42px; background: rgba(26,20,16,0.65);
+        width: 42px; height: 42px; border-radius: 50%;
+        background: rgba(26,20,16,0.6); backdrop-filter: blur(6px);
         border: 1px solid rgba(181,113,74,0.3); color: var(--gold);
         display: flex; align-items: center; justify-content: center;
         cursor: pointer; font-size: 1.2rem; transition: all 0.2s var(--ease);
       }
       .carousel-arrow:hover { background: var(--copper); color: var(--parchment); border-color: var(--copper); }
-      .carousel-prev { left: 0.8rem; }
-      .carousel-next { right: 0.8rem; }
-      .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.4rem; }
+      .carousel-prev { left: 1rem; }
+      .carousel-next { right: 1rem; }
+      .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.6rem; }
       .carousel-dot {
         width: 7px; height: 7px; border-radius: 50%;
         background: rgba(181,113,74,0.3); cursor: pointer;
@@ -86,25 +55,19 @@
       .carousel-dot.active { background: var(--copper); transform: scale(1.35); }
 
       @media (max-width: 640px) {
-        .gallery-banner { min-height: 46vh; }
-        .gallery-banner-content { padding: 6rem 1.25rem 3rem; }
-        #gallery-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 8px; }
         .gallery-carousel { padding: 4rem 1.25rem; }
-        .carousel-frame { aspect-ratio: 4 / 3; }
+        .carousel-frame { aspect-ratio: 4 / 3; border-radius: 14px; }
         .carousel-arrow { width: 36px; height: 36px; font-size: 1rem; }
       }
     </style>
 </head>
 <body>
 
-<!-- === GOOGLE FONTS === -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="SWI2.css" rel="stylesheet">
-
 <!-- === NAV (identical to index.html) === -->
 <nav>
   <div class="nav-brand">
     <a href="index.html#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="" aria-hidden="true" style="height:30px;width:auto;object-fit:contain;opacity:0.95">
       <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
     </a>
     <div class="nav-social">
@@ -137,22 +100,38 @@
   <a href="index.html#contact">Contact</a>
 </div>
 
-<!-- === HERO BANNER (image, full-width, overlay text) === -->
-<section class="gallery-banner">
-  <img class="gallery-banner-img"
-       src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481362/Screenshot_2026-06-18_000125_hfmoo3.png"
-       alt="Star Wrought Iron — handcrafted ironwork">
-  <div class="gallery-banner-overlay"></div>
-  <div class="gallery-banner-content">
-    <nav class="breadcrumb" aria-label="Breadcrumb" style="justify-content:center">
+<!-- ============================================================
+     HERO — full-width, centred, dark forge ground.
+     The old logo panel + Arabic lockup and the faded background
+     photo are gone; what's left is one title, one line of copy,
+     two actions, and soft copper shapes drifting behind.
+     ============================================================ -->
+<section class="gh">
+  <div class="gh-grid" aria-hidden="true"></div>
+
+  <!-- Decorative copper shapes: two large ones cut off at the top
+       corners, one medium low-left, one hairline ring for rhythm. -->
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--copper blob--o1 blob--grain" style="--s:520px; top:-220px; right:-180px"></span>
+    <span class="blob blob--glow blob--o3"              style="--s:420px; top:-140px; left:-170px"></span>
+    <span class="blob blob--copper blob--o2"            style="--s:230px; bottom:-90px; left:8%; opacity:.2"></span>
+    <span class="blob blob--ring blob--ring-light blob--o4 blob--drop-mobile" style="--s:180px; top:22%; right:12%"></span>
+  </div>
+
+  <div class="gh-fade" aria-hidden="true"></div>
+
+  <div class="gh-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="index.html">Home</a>
       <span class="crumb-sep">／</span>
       <span class="crumb-current">Gallery</span>
     </nav>
-    <p class="hero-eyebrow" style="justify-content:center">Premium Ironcraft · Complete Portfolio</p>
-    <h1 class="gallery-banner-title">Our <em>Gallery</em></h1>
-    <p class="gallery-banner-tag">A closer look at three decades of handcrafted ironwork, shaped by hand in our Umm Al Quwain workshop.</p>
-    <div class="hero-actions" style="margin-top:2.2rem">
+
+    <h1 class="gh-title">Our Gallery</h1>
+    <div class="gh-rule" aria-hidden="true"></div>
+    <p class="gh-sub">Three decades of ironwork, shaped by hand in our Umm Al Quwain workshop.</p>
+
+    <div class="gh-actions">
       <a href="index.html" class="btn-ghost">← Back to Home</a>
       <a href="index.html#contact" class="btn-primary">Commission a Piece →</a>
     </div>
@@ -172,7 +151,11 @@
 </div>
 
 <!-- === FEATURED CAROUSEL === -->
-<section class="gallery-carousel" aria-label="Featured work carousel">
+<section class="gallery-carousel has-decor" aria-label="Featured work carousel">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--glow blob--o2"   style="--s:460px; top:-160px; left:-200px"></span>
+    <span class="blob blob--copper blob--o4 blob--drop-mobile" style="--s:190px; bottom:6%; right:-70px; opacity:.22"></span>
+  </div>
   <div class="inner" style="max-width:1200px">
     <div class="carousel-header">
       <p class="eyebrow" style="color:var(--copper)">Featured Highlights</p>
@@ -208,8 +191,14 @@
   </svg>
 </div>
 
-<!-- === FULL GALLERY GRID (compact) === -->
-<section class="section" id="gallery" style="background:var(--parchment)">
+<!-- === FULL GALLERY GRID === -->
+<section class="section has-decor" id="gallery" style="background:var(--parchment)">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--tint blob--o3" style="--s:440px; top:-160px; left:-190px"></span>
+    <span class="blob blob--tint blob--o1 blob--drop-mobile" style="--s:300px; bottom:4%; right:-140px; opacity:.4"></span>
+    <span class="blob blob--ring blob--o2 blob--drop-mobile" style="--s:120px; top:18%; right:6%"></span>
+  </div>
+
   <div class="inner" style="max-width:1200px">
     <div class="port-header">
       <div>
@@ -220,14 +209,12 @@
     </div>
 
     <!-- Populated dynamically from the `projects` array in SWI2.js
-         via renderGalleryGrid(), so project data lives in one place.
-         Compact sizing is applied via the #gallery-grid rules above. -->
-    <div class="gallery-grid-wrap" id="gallery-grid"></div>
+         via renderGalleryGrid(), so project data lives in one place. -->
+    <div class="ig-grid" id="gallery-grid"></div>
 
-    <!-- Bottom trust line, matching the homepage's tone -->
-    <div style="text-align:center;margin-top:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem">
+    <div style="text-align:center;margin-top:3.5rem;display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap">
       <div style="height:1px;width:80px;background:linear-gradient(90deg,transparent,rgba(181,113,74,0.3))"></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;font-style:italic;letter-spacing:0.14em;color:rgba(181,113,74,0.45)">Over 2,000 satisfied clients across the UAE since 1990</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:0.85rem;font-style:italic;letter-spacing:0.1em;color:rgba(181,113,74,0.55)">Over 2,000 satisfied clients across the UAE since 1990</p>
       <div style="height:1px;width:80px;background:linear-gradient(90deg,rgba(181,113,74,0.3),transparent)"></div>
     </div>
   </div>
@@ -365,7 +352,10 @@
     function next() { goTo(active + 1); }
     function prev() { goTo(active - 1); }
 
-    function startAutoplay() { timer = setInterval(next, 4500); }
+    function startAutoplay() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      timer = setInterval(next, 4500);
+    }
     function stopAutoplay() { clearInterval(timer); }
     function restartAutoplay() { stopAutoplay(); startAutoplay(); }
 
