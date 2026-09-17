@@ -8,6 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+  /* This page stays self-contained — it is the post-submit redirect and
+     must render even if SWI2.css hasn't been cached. The tokens and the
+     shape system below are copied verbatim from SWI2.css so the two stay
+     visually identical. */
   :root {
     --copper:       #B5714A;
     --copper-dark:  #8B5635;
@@ -16,6 +20,7 @@
     --gold-pale:    #E8D5C0;
     --parchment:    #F0E8E0;
     --offwhite:     #F7F4F1;
+    --panel:        #FBF8F5;
     --forge:        #1A1410;
     --forge-mid:    #231A13;
     --forge-light:  #2E2118;
@@ -33,7 +38,8 @@
 
   body {
     font-family: var(--ff-body);
-    background: var(--forge);
+    /* Same forge ground as the gallery hero */
+    background: radial-gradient(130% 100% at 50% -10%, #33241A 0%, #241A13 46%, var(--forge) 100%);
     color: var(--offwhite);
     min-height: 100vh;
     display: flex;
@@ -42,30 +48,80 @@
     text-align: center;
     padding: 2rem;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
   }
 
-  /* subtle grid texture, matching hero */
+  /* --- Forge grid, same primitive as the hero --- */
   .bg-grid {
-    position: absolute; inset: 0; opacity: 0.025;
+    position: absolute; inset: 0; opacity: 0.03; z-index: 0;
     background-image:
       linear-gradient(var(--copper) 1px, transparent 1px),
       linear-gradient(90deg, var(--copper) 1px, transparent 1px);
-    background-size: 60px 60px;
+    background-size: 68px 68px;
     pointer-events: none;
   }
 
-  .bg-glow {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 640px; height: 640px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(181,113,74,0.10) 0%, transparent 70%);
-    pointer-events: none;
+  /* ============================================================
+     SOFT ORGANIC COPPER SHAPES — identical to SWI2.css
+     ============================================================ */
+  .decor { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .blob { --s: 320px; position: absolute; display: block; width: var(--s); height: var(--s); pointer-events: none; }
+
+  .blob--o1 { border-radius: 62% 38% 55% 45% / 58% 42% 58% 42%; }
+  .blob--o2 { border-radius: 44% 56% 38% 62% / 52% 36% 64% 48%; }
+  .blob--o3 { border-radius: 58% 42% 66% 34% / 40% 62% 38% 60%; }
+  .blob--o4 { border-radius: 36% 64% 48% 52% / 60% 44% 56% 40%; }
+
+  .blob--petal1 { border-radius: 46% 46% 46% 14%; }
+  .blob--petal2 { border-radius: 46% 46% 14% 46%; }
+  .blob--petal3 { border-radius: 14% 46% 46% 46%; }
+  .blob--petal4 { border-radius: 46% 14% 46% 46%; }
+
+  .blob--copper {
+    background:
+      radial-gradient(circle at 32% 26%, rgba(255,232,210,0.22), transparent 50%),
+      radial-gradient(circle at 74% 82%, rgba(20,12,6,0.45), transparent 58%),
+      linear-gradient(150deg, #D69B6C 0%, #B5714A 36%, #8B5635 68%, #5E3822 100%);
+    filter: blur(18px);
+    opacity: 0.3;
+  }
+  .blob--foil {
+    background:
+      repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0 2px, transparent 2px 7px),
+      radial-gradient(circle at 26% 22%, rgba(255,238,222,0.42), transparent 52%),
+      radial-gradient(circle at 78% 84%, rgba(24,14,7,0.5), transparent 60%),
+      linear-gradient(142deg, #E0A879 0%, #C07E52 30%, #9A6038 62%, #6B4127 100%);
+    filter: blur(6px);
+    opacity: 0.34;
+  }
+  .blob--glow {
+    background: radial-gradient(circle at 50% 50%, rgba(181,113,74,0.34) 0%, rgba(181,113,74,0.1) 45%, transparent 72%);
+    filter: blur(12px);
+    opacity: 0.75;
+  }
+  .blob--ring {
+    background: none;
+    border: 1px solid rgba(201,160,122,0.28);
+    filter: none;
+    opacity: 0.55;
+  }
+  .blob--grain::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light; opacity: 0.6;
+  }
+  @media (max-width: 900px) {
+    .blob { width: calc(var(--s) * 0.66); height: calc(var(--s) * 0.66); }
+    .blob--drop-mobile { display: none; }
   }
 
+  /* ============================================================
+     CARD
+     ============================================================ */
   .card {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 560px;
     width: 100%;
     animation: fadeUp 0.9s var(--ease);
@@ -93,7 +149,7 @@
     border: 1px solid rgba(181,113,74,0.15);
     border-radius: 50%;
   }
-  .icon-ring svg { color: var(--copper); }
+  .icon-ring svg { color: var(--copper); display: block; }
 
   .rule-row {
     display: flex; align-items: center; justify-content: center;
@@ -104,39 +160,37 @@
     background: linear-gradient(90deg, transparent, var(--copper), transparent);
   }
   .eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
+    font-size: 0.66rem;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 500;
+    color: rgba(201,160,122,0.6);
+    font-weight: 400;
   }
 
   h1 {
     font-family: var(--ff-display);
-    font-weight: 500;
-    font-size: clamp(2.6rem, 6vw, 4rem);
-    line-height: 1.1;
-    color: var(--offwhite);
+    font-weight: 300;
+    font-size: clamp(2.8rem, 6.5vw, 4.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--parchment);
     margin-bottom: 0.4rem;
-  }
-  h1 em {
-    font-style: italic;
-    color: var(--gold);
-    font-weight: 400;
   }
 
   .message {
-    font-size: 1rem;
-    color: rgba(240,232,224,0.7);
-    line-height: 1.75;
-    max-width: 420px;
-    margin: 1.4rem auto 2.6rem;
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.18rem);
+    color: rgba(232,213,192,0.68);
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 1.5rem auto 2.6rem;
     font-weight: 300;
   }
-
   .message strong {
     color: var(--gold-pale);
     font-weight: 500;
+    font-style: normal;
   }
 
   .actions {
@@ -147,29 +201,25 @@
   }
 
   .btn-primary {
-    display: inline-block;
-    padding: 0.95rem 2.6rem;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.9rem 2.4rem;
     background: var(--copper);
-    color: var(--forge);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    color: var(--parchment);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     text-decoration: none;
-    border-radius: 2px;
-    transition: all 0.3s var(--ease);
+    transition: background 0.25s var(--ease);
   }
-  .btn-primary:hover {
-    background: var(--gold);
-    transform: translateY(-1px);
-  }
+  .btn-primary:hover { background: var(--copper-dark); }
+  .btn-primary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
   .redirect-note {
     font-size: 0.72rem;
-    color: var(--text-faint);
+    color: rgba(168,152,140,0.65);
     letter-spacing: 0.02em;
   }
-
   .redirect-note span {
     color: var(--copper-light);
     font-weight: 600;
@@ -186,20 +236,31 @@
   .footer-wordmark span { color: var(--copper); margin: 0 3px; }
 
   @media (max-width: 480px) {
-    .message { font-size: 0.92rem; }
-    .btn-primary { width: 100%; padding: 1rem; }
+    .btn-primary { width: 100%; justify-content: center; padding: 1rem; }
+    .footer-wordmark { margin-top: 2.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<!-- Soft copper shapes, cut off at the corners — same composition
+     language as the gallery hero. -->
+<div class="decor" aria-hidden="true">
+  <span class="blob blob--foil blob--petal1"   style="--s:520px; top:-220px; left:-200px"></span>
+  <span class="blob blob--glow blob--petal3"   style="--s:460px; bottom:-190px; right:-180px"></span>
+  <span class="blob blob--copper blob--o2 blob--grain blob--drop-mobile" style="--s:220px; top:12%; right:9%; opacity:.2"></span>
+  <span class="blob blob--ring blob--o4 blob--drop-mobile" style="--s:150px; bottom:14%; left:8%"></span>
+</div>
 
 <div class="card">
 
   <div class="icon-ring">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M20 6L9 17l-5-5"/>
     </svg>
   </div>
@@ -210,7 +271,7 @@
     <div class="rule-line"></div>
   </div>
 
-  <h1>Thank <em>You</em></h1>
+  <h1>Thank You</h1>
 
   <p class="message">
     Your enquiry has been received. Our team will review your project details and get back to you within <strong>24–48 hours</strong>.
