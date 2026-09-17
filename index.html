@@ -8,6 +8,25 @@
 </head>
 <body>
 
+<!-- Hidden filter def, used by .hero-logo below to knock the white
+     background out of the logo PNG. See SWI2.css for how it's wired
+     up, and the comment there for why this beats a blend-mode alone. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="hero-logo-knockout" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 1 0" result="chR"/>
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="0 1 0 0 0  0 1 0 0 0  0 1 0 0 0  0 0 0 1 0" result="chG"/>
+    <feColorMatrix in="SourceGraphic" type="matrix"
+      values="0 0 1 0 0  0 0 1 0 0  0 0 1 0 0  0 0 0 1 0" result="chB"/>
+    <feBlend in="chR" in2="chG" mode="darken" result="minRG"/>
+    <feBlend in="minRG" in2="chB" mode="darken" result="whiteness"/>
+    <feColorMatrix in="whiteness" type="matrix"
+      values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1 0 0 0 1" result="alphaMask"/>
+    <feComposite in="SourceGraphic" in2="alphaMask" operator="in"/>
+  </filter>
+</svg>
+
 <!-- === GOOGLE FONTS === -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="SWI2.css" rel="stylesheet">
@@ -16,15 +35,12 @@
 <nav>
   <div class="nav-brand">
     <a href="#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="" aria-hidden="true" style="height:30px;width:auto;object-fit:contain;opacity:0.95">
       <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
     </a>
-     <div class="nav-social">
-      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-      </a>
-      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-      </a>
+    <div class="nav-social">
+      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
     </div>
   </div>
   <ul class="nav-links">
@@ -50,30 +66,50 @@
 </div>
 
 <!-- === HERO === -->
-<section id="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
+<section id="hero" class="has-decor">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
 
-  <!-- Hero Logo -->
-  <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="Star Wrought Iron Logo" style="height:120px;width:auto;object-fit:contain;margin-bottom:2rem;filter:brightness(1.05) drop-shadow(0 0 18px rgba(181,113,74,0.25))">
-
-  <div style="display:flex;align-items:center;gap:14px;margin-bottom:0.5rem">
-    <div class="hero-rule-line"></div>
-    <span class="hero-est">Est. Dubai 1990</span>
-    <div class="hero-rule-line" style="transform:scaleX(-1)"></div>
+  <!-- Copper shapes, weighted to the corners so the centre stays clear
+       for the logo. Larger and a touch more present than elsewhere on
+       the page, since this is the darkest ground on the site. -->
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--foil blob--petal1"  style="--s:620px; top:-250px; left:-230px"></span>
+    <span class="blob blob--foil blob--petal3 blob--soften"  style="--s:600px; bottom:-280px; right:-250px; opacity:.22"></span>
+    <span class="blob blob--glow blob--o3"      style="--s:520px; top:-120px; right:6%"></span>
+    <span class="blob blob--glow blob--o2"      style="--s:420px; bottom:-140px; left:10%; opacity:.6"></span>
+    <span class="blob blob--copper blob--petal2 blob--drop-mobile" style="--s:230px; top:20%; right:-60px; opacity:.24"></span>
+    <span class="blob blob--ring blob--ring-light blob--o4 blob--drop-mobile" style="--s:160px; bottom:20%; left:8%"></span>
   </div>
 
-  <p class="hero-eyebrow">Premium Ironcraft · UAE · Family Heritage</p>
-  <h1 class="hero-h1">Star Wrought</h1>
-  <h1 class="hero-h1-italic">Iron</h1>
-  <p class="hero-tagline">"Custom handmade metal fabrications since 1990."</p>
+  <div class="hero-inner">
+    <p class="hero-eyebrow hero-rise" style="--d:0s">Premium Ironcraft · UAE · Family Heritage</p>
 
-  <div class="hero-actions">
-    <a href="gallery.html" class="btn-primary">View Our Work ↗</a>
-    <a href="#contact" class="btn-ghost">Request a Quote</a>
+    <!-- White background removed via the #hero-logo-knockout filter
+         (defined at the top of <body>, wired up in SWI2.css). -->
+    <img class="hero-logo hero-rise" style="--d:0.08s"
+         src="https://res.cloudinary.com/dt8tx4kz1/image/upload/v1789630993/image_2026-09-17_114307866_ayepze.png"
+         alt="Star Wrought Iron">
+
+    <div class="hero-mark-rule hero-rise" style="--d:0.18s" aria-hidden="true">
+      <i></i><span>✦</span><i></i>
+    </div>
+
+    <p class="hero-tagline hero-rise" style="--d:0.26s">"Custom handmade metal fabrications since 1990."</p>
+
+    <div class="hero-est-row hero-rise" style="--d:0.34s">
+      <i aria-hidden="true"></i>
+      <span class="hero-est">Est. Dubai 1990</span>
+      <i aria-hidden="true"></i>
+    </div>
+
+    <div class="hero-actions hero-rise" style="--d:0.42s">
+      <a href="gallery.html" class="btn-primary">View Our Work ↗</a>
+      <a href="#contact" class="btn-ghost">Request a Quote</a>
+    </div>
   </div>
 
-  <div class="hero-scroll-hint">
+  <div class="hero-scroll-hint" aria-hidden="true">
     <span class="hero-scroll-text">Scroll</span>
     <div class="hero-scroll-line"></div>
   </div>
@@ -101,7 +137,12 @@
 </div>
 
 <!-- === ABOUT === -->
-<section class="section" id="about" style="background:var(--parchment)">
+<section class="section has-decor" id="about" style="background:var(--parchment)">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--tint blob--petal2" style="--s:470px; top:-190px; right:-200px"></span>
+    <span class="blob blob--tint blob--o4 blob--drop-mobile" style="--s:260px; bottom:8%; left:-120px; opacity:.42"></span>
+    <span class="blob blob--ring blob--o1 blob--drop-mobile" style="--s:110px; top:26%; left:5%"></span>
+  </div>
   <div class="inner">
     <div class="about-layout" style="grid-template-columns:1fr;max-width:760px;margin:0 auto">
       <div>
@@ -121,6 +162,56 @@
   </div>
 </section>
 
+<!-- === LEADERSHIP: MD WELCOME + CORE VALUES === -->
+<section class="section has-decor" id="leadership">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--glow blob--petal3" style="--s:420px; top:-150px; right:-170px"></span>
+    <span class="blob blob--copper blob--o2 blob--drop-mobile" style="--s:210px; bottom:-80px; left:-70px; opacity:.2"></span>
+  </div>
+  <div class="inner">
+    <div style="max-width:780px;margin:0 auto;text-align:center">
+      <p class="eyebrow" style="justify-content:center;color:var(--copper)">A Word From Our Managing Director</p>
+      <blockquote class="md-quote">"Since 1990, Star Wrought Iron has been built on a simple belief — that ironwork is not just structural, it's personal. Every gate, staircase and screen that leaves our workshop carries the hands of the craftsmen who shaped it, and the trust of the families and businesses who welcomed us into their homes and developments. As we continue to grow across the UAE, our commitment remains the same: honest work, delivered on time, built to last a lifetime."</blockquote>
+      <div class="md-sign">M. Saqib<span>Managing Director, Star Wrought Iron</span></div>
+    </div>
+
+    <div class="core-values-grid">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <div class="value-name">Craftsmanship</div>
+        <div class="value-desc">Every piece is hand-shaped and finished with the same precision as our first commission in 1990.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <div class="value-name">Integrity</div>
+        <div class="value-desc">Transparent pricing, honest timelines, and work we stand behind long after installation.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <div class="value-name">Safety First</div>
+        <div class="value-desc">Strict workshop and site safety protocols protect our team and your property on every job.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-num">04</div>
+        <div class="value-name">Client Partnership</div>
+        <div class="value-desc">We listen first, then design — treating every brief as a genuine collaboration.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === SCROLLWORK DIVIDER 1B — Offwhite bg (leads into Specialisations) === -->
+<div class="divider-wrap" style="background:var(--offwhite)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.3">
+      <line x1="0" y1="22" x2="480" y2="22"/>
+      <path d="M480,22 Q495,8 510,8 Q525,8 540,22 Q555,36 570,36 Q585,36 600,22 Q615,8 630,8 Q645,8 660,22"/>
+      <circle cx="600" cy="22" r="3.5" fill="rgba(181,113,74,0.18)" stroke="#B5714A" stroke-width="0.7"/>
+      <line x1="660" y1="22" x2="1200" y2="22"/>
+    </g>
+  </svg>
+</div>
+
 <!-- === SCROLLWORK DIVIDER 2 — Offwhite bg === -->
 <div class="divider-wrap" style="background:var(--offwhite)">
   <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -134,7 +225,11 @@
 </div>
 
 <!-- === SERVICES === -->
-<section class="section" id="services" style="background:var(--offwhite)">
+<section class="section has-decor" id="services" style="background:var(--offwhite)">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--tint blob--petal4" style="--s:430px; top:-170px; left:-190px"></span>
+    <span class="blob blob--tint blob--o1 blob--drop-mobile" style="--s:300px; bottom:-130px; right:-130px; opacity:.38"></span>
+  </div>
   <div class="inner">
     <div class="services-header">
       <div>
@@ -227,6 +322,25 @@
       </div>
 
     </div>
+
+    <div class="material-strip">
+      <div class="material-badge">
+        <div class="material-badge-label">Wrought Iron</div>
+        <div class="material-badge-sub">Traditional hand-forging</div>
+      </div>
+      <div class="material-badge">
+        <div class="material-badge-label">Cast Aluminum</div>
+        <div class="material-badge-sub">Lightweight, corrosion-resistant</div>
+      </div>
+      <div class="material-badge">
+        <div class="material-badge-label">CNC Precision</div>
+        <div class="material-badge-sub">Cutting & machining</div>
+      </div>
+      <div class="material-badge">
+        <div class="material-badge-label">Bespoke Fabrication</div>
+        <div class="material-badge-sub">Design to installation</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -243,7 +357,10 @@
 </div>
 
 <!-- === TESTIMONIALS === -->
-<section id="testimonials" style="background:var(--forge);padding:7rem 2rem">
+<section id="testimonials" class="has-decor" style="background:var(--forge);padding:7rem 2rem">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--copper blob--petal2 blob--grain" style="--s:420px; top:-170px; right:-160px; opacity:.24"></span>
+  </div>
   <div class="inner">
     <div style="text-align:center;margin-bottom:4rem">
       <p class="eyebrow" style="justify-content:center;color:var(--copper)">Client Words</p>
@@ -306,7 +423,11 @@
 </div>
 
 <!-- === PROCESS === -->
-<section id="process">
+<section id="process" class="has-decor">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--glow blob--petal4" style="--s:400px; top:-140px; left:-160px"></span>
+    <span class="blob blob--copper blob--o4 blob--drop-mobile" style="--s:180px; bottom:-70px; right:6%; opacity:.2"></span>
+  </div>
   <div class="inner">
     <div style="text-align:center;margin-bottom:0.5rem">
       <p class="eyebrow" style="justify-content:center">How We Work</p>
@@ -337,6 +458,80 @@
   </div>
 </section>
 
+<!-- === SCROLLWORK DIVIDER 4B — Offwhite bg (leads into Safety) === -->
+<div class="divider-wrap" style="background:var(--offwhite)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.3">
+      <line x1="0" y1="22" x2="480" y2="22"/>
+      <path d="M480,22 Q495,8 510,8 Q525,8 540,22 Q555,36 570,36 Q585,36 600,22"/>
+      <circle cx="540" cy="22" r="3.5" fill="rgba(181,113,74,0.18)" stroke="#B5714A" stroke-width="0.7"/>
+      <line x1="600" y1="22" x2="1200" y2="22"/>
+    </g>
+  </svg>
+</div>
+
+<!-- === SAFETY STANDARDS & POLICY === -->
+<section class="section has-decor" id="safety">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--tint blob--petal2" style="--s:400px; bottom:-160px; right:-170px"></span>
+    <span class="blob blob--ring blob--o3 blob--drop-mobile" style="--s:120px; top:20%; left:5%"></span>
+  </div>
+  <div class="inner">
+    <div class="services-header">
+      <div>
+        <p class="eyebrow">Quality & Safety</p>
+        <h2 class="display-title">Safety <em>Standards</em> & Policy</h2>
+      </div>
+      <p style="font-family:var(--ff-display);font-style:italic;color:var(--text-muted);font-size:1rem;max-width:280px;line-height:1.6">Every project is executed under strict workshop and site safety protocols.</p>
+    </div>
+
+    <div class="safety-grid">
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div>
+          <div class="safety-text-title">PPE Compliance</div>
+          <div class="safety-text-desc">All workshop personnel are equipped with certified protective gear — welding masks, gloves and safety boots — for every fabrication task.</div>
+        </div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div>
+          <div class="safety-text-title">Site Risk Assessment</div>
+          <div class="safety-text-desc">Pre-installation site surveys identify and mitigate on-site hazards before any work begins.</div>
+        </div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M8 12l2.5 2.5L16 9"/></svg></div>
+        <div>
+          <div class="safety-text-title">Quality Control Checks</div>
+          <div class="safety-text-desc">Multi-stage inspection of welds, finishes and structural integrity before every piece leaves the workshop.</div>
+        </div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div>
+          <div class="safety-text-title">Trained Workforce</div>
+          <div class="safety-text-desc">Artisans and installers are regularly trained on UAE occupational health & safety practice.</div>
+        </div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 2C8 6 4 8 4 13a8 8 0 0016 0c0-5-4-7-8-11z"/></svg></div>
+        <div>
+          <div class="safety-text-title">Fire & Equipment Safety</div>
+          <div class="safety-text-desc">Workshop machinery is routinely serviced, with fire suppression and safety equipment on hand at all times.</div>
+        </div>
+      </div>
+      <div class="safety-item">
+        <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+        <div>
+          <div class="safety-text-title">Insured & Compliant</div>
+          <div class="safety-text-desc">Fully licensed operations, compliant with UAE municipality and civil defence requirements.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- === SCROLLWORK DIVIDER 5 — Forge-light bg === -->
 <div class="divider-wrap" style="background:var(--forge-light)">
   <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -351,7 +546,11 @@
 </div>
 
 <!-- === CLIENTS === -->
-<section id="clients">
+<section id="clients" class="has-decor">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--foil blob--petal3" style="--s:420px; top:-175px; right:-150px"></span>
+    <span class="blob blob--glow blob--o4 blob--drop-mobile" style="--s:300px; bottom:-140px; left:-110px"></span>
+  </div>
   <div style="max-width:1080px;margin:0 auto">
     <p class="clients-eyebrow">Trusted by leading names across the UAE</p>
     <div style="max-width:900px;margin:0 auto;border:1px solid rgba(181,113,74,0.12);overflow:hidden">
@@ -378,7 +577,12 @@
 </div>
 
 <!-- === CONTACT === -->
-<section id="contact" style="background:var(--forge-mid);padding:7rem 2rem">
+<section id="contact" class="has-decor" style="background:var(--forge-mid);padding:7rem 2rem">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--foil blob--petal1" style="--s:500px; bottom:-230px; right:-190px; opacity:.26"></span>
+    <span class="blob blob--glow blob--o2" style="--s:380px; top:-150px; left:-160px"></span>
+    <span class="blob blob--ring blob--ring-light blob--o3 blob--drop-mobile" style="--s:130px; top:14%; right:8%"></span>
+  </div>
   <div class="inner contact-layout">
 
     <!-- LEFT: Info -->
@@ -403,7 +607,7 @@
           </div>
           <div>
             <div class="c-lbl">Phone</div>
-            <div class="c-val">+971 6 000 0000</div>
+            <div class="c-val">050 645 4953 / 052 658 8117<br><span style="font-size:0.72em;opacity:0.65">M. Saqib</span></div>
           </div>
         </div>
         <div class="c-detail">
@@ -514,6 +718,14 @@
     <div>
       <div class="footer-brand-name">Star ✦ Wrought Iron</div>
       <div class="footer-brand-tag">"Custom handmade metal fabrications since 1990."</div>
+    </div>
+    <div>
+      <div class="footer-social-label">Follow our work</div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://wa.me/971526588117" target="_blank" rel="noopener noreferrer" aria-label="Message Star Wrought Iron on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.94 9.94 0 00-8.5 15.2L2 22l4.95-1.45A9.94 9.94 0 1012 2zm0 18.06a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.06 1.01 1.02-2.99-.19-.31A8.06 8.06 0 1112 20.06zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.77.95-.14.17-.28.19-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.36-1.69-.14-.24-.01-.37.11-.5.11-.11.24-.28.37-.43.12-.14.16-.24.24-.4.08-.17.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47a.9.9 0 00-.65.3c-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg></a>
+      </div>
     </div>
   </div>
   <div class="footer-bottom">
