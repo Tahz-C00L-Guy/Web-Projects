@@ -17,6 +17,7 @@
   --text-body:    #3A2D25;
   --text-muted:   #7A6558;
   --text-faint:   #A8988C;
+  --panel:        #FBF8F5;   /* warm panel — never pure #fff */
   --rule:         rgba(181,113,74,0.22);
   --ff-display:   'Cormorant Garamond', Georgia, serif;
   --ff-body:      'Inter', sans-serif;
@@ -50,16 +51,31 @@ nav {
   color: var(--gold); white-space: nowrap;
 }
 .nav-wordmark span { color: var(--copper); margin: 0 3px; }
-.nav-social { display: flex; align-items: center; gap: 10px; margin-left: 4px; }
-.nav-social a {
-  width: 28px; height: 28px;
-  border: 1px solid rgba(181,113,74,0.25);
+/* One social-icon treatment, shared by the nav and the footer so the
+   two never drift apart. 37px target, 19px glyph. */
+.nav-social, .footer-social { display: flex; align-items: center; gap: 10px; }
+.nav-social { margin-left: 6px; }
+.nav-social a, .footer-social a {
+  width: 37px; height: 37px; flex-shrink: 0;
+  border: 1px solid rgba(181,113,74,0.3);
   display: flex; align-items: center; justify-content: center;
-  color: rgba(201,160,122,0.55);
+  color: rgba(201,160,122,0.75);
   transition: all 0.25s var(--ease);
-  border-radius: 4px;
+  border-radius: 8px;
 }
-.nav-social a:hover { border-color: var(--copper); color: var(--copper); background: rgba(181,113,74,0.08); }
+.nav-social a svg, .footer-social a svg { width: 19px; height: 19px; }
+.footer-social a:hover {
+  border-color: var(--copper); color: var(--copper);
+  background: rgba(181,113,74,0.1);
+  transform: translateY(-2px);
+}
+.footer-social a:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; }
+.footer-social-label {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(201,160,122,0.4); margin-bottom: 0.9rem;
+}
+@media (prefers-reduced-motion: reduce) { .footer-social a:hover { transform: none; } }
+.nav-social a:hover { border-color: var(--copper); color: var(--copper); background: rgba(181,113,74,0.1); }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; }
 .nav-links a {
   font-size: 0.68rem; font-weight: 500;
@@ -107,18 +123,25 @@ nav {
   text-align: center; padding: 7rem 3rem 5rem;
   position: relative; overflow: hidden;
 }
+/* Background layers.
+   These are `position: absolute` while the hero's content is in normal
+   flow — so without an explicit z-index they PAINT ON TOP of the text
+   and swallow clicks on the hero buttons. `z-index: -1` (safe: #hero
+   isolates its own stacking context) puts them back behind, and
+   pointer-events:none is a second line of defence. */
 .hero-grid-bg {
-  position: absolute; inset: 0; opacity: 0.025;
+  position: absolute; inset: 0; z-index: -1; opacity: 0.03;
   background-image:
     linear-gradient(var(--copper) 1px, transparent 1px),
     linear-gradient(90deg, var(--copper) 1px, transparent 1px);
-  background-size: 60px 60px;
+  background-size: 68px 68px;
+  pointer-events: none;
 }
 .hero-glow {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute; top: 46%; left: 50%; z-index: -1;
   transform: translate(-50%, -50%);
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(181,113,74,0.07) 0%, transparent 70%);
+  width: 760px; height: 760px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(181,113,74,0.12) 0%, rgba(181,113,74,0.04) 45%, transparent 70%);
   pointer-events: none;
 }
 .hero-logo-wrap {
@@ -126,6 +149,59 @@ nav {
   display: flex; align-items: center; justify-content: center;
 }
 .hero-logo-svg { width: 110px; height: 110px; }
+
+/* Homepage hero logo.
+   The source PNG has a flat white background. #hero-logo-knockout
+   (defined once as a hidden <svg><filter> right after <body> in
+   index.html) removes it: it finds the per-pixel minimum of R/G/B —
+   a clean "how white is this" signal, since white has a high minimum
+   on every channel while a saturated colour like this logo's copper
+   or gold has at least one low channel — inverts that into an alpha
+   mask, and composites it back over the ORIGINAL colours. So the
+   white goes transparent and the artwork's own colours are untouched:
+   no hue shift, no darkening.
+   (`mix-blend-mode: multiply` alone also removes the white, but on a
+   ground this dark it multiplies the logo's own colours down with
+   it, leaving them muddy — that's why this uses the SVG filter
+   instead. Tested against a synthetic stand-in before shipping,
+   since this environment can't fetch the real Cloudinary asset to
+   check directly — worth a quick look on your end.) */
+.hero-logo {
+  height: 190px; width: auto; object-fit: contain;
+  margin: 0;
+  filter: url(#hero-logo-knockout)
+          drop-shadow(0 0 30px rgba(181,113,74,0.38))
+          drop-shadow(0 6px 20px rgba(0,0,0,0.5));
+}
+@media (max-width: 640px) { .hero-logo { height: 130px; } }
+/* Content column. Sits in normal flow above the background layers;
+   the max-width keeps the tagline to a comfortable measure. */
+.hero-inner {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 620px;
+}
+
+/* Copper rule under the logo, with the brand's star as its node —
+   the same motif as the scrollwork dividers further down the page. */
+.hero-mark-rule {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  width: 200px; margin: 1.9rem 0 2.1rem;
+}
+.hero-mark-rule i {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(181,113,74,0.65));
+}
+.hero-mark-rule i:last-child { background: linear-gradient(90deg, rgba(181,113,74,0.65), transparent); }
+.hero-mark-rule span { color: var(--copper); font-size: 0.7rem; line-height: 1; }
+
+/* "Est. Dubai 1990" — small serif, letterspaced, flanked by hairlines. */
+.hero-est-row {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-top: 2.2rem;
+}
+.hero-est-row i { width: 36px; height: 1px; background: rgba(181,113,74,0.4); }
+
 .hero-rule-top, .hero-rule-bottom {
   display: flex; align-items: center; gap: 1rem;
   margin-bottom: 0.6rem;
@@ -159,12 +235,30 @@ nav {
   letter-spacing: 0.02em;
 }
 .hero-tagline {
-  font-family: var(--ff-display); font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 300; font-style: italic;
-  color: rgba(201,160,122,0.7); margin-bottom: 3rem;
-  letter-spacing: 0.03em; max-width: 480px;
+  font-family: var(--ff-display); font-size: clamp(1.25rem, 2.9vw, 1.72rem);
+  font-weight: 300; font-style: italic; line-height: 1.5;
+  color: rgba(232,213,192,0.82); margin: 0;
+  letter-spacing: 0.01em; max-width: 520px;
 }
-.hero-actions { display: flex; gap: 1.2rem; align-items: center; justify-content: center; }
+.hero-actions {
+  display: flex; gap: 1rem; align-items: center; justify-content: center;
+  flex-wrap: wrap; margin-top: 2.8rem;
+}
+/* Buttons must be reliably clickable: keep them above any decorative
+   sibling and give them a real hit area. */
+.hero-actions a { position: relative; z-index: 2; }
+
+/* --- Load sequence ---
+   One orchestrated entrance, staggered by `--d`, rather than a
+   separate effect on each element. */
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-rise { animation: heroRise 0.85s var(--ease) both; animation-delay: var(--d, 0s); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise { animation: none; opacity: 1; transform: none; }
+}
 .btn-primary {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 0.9rem 2.4rem;
@@ -194,6 +288,157 @@ nav {
 .hero-scroll-line {
   width: 1px; height: 40px;
   background: linear-gradient(to bottom, rgba(181,113,74,0.5), transparent);
+}
+
+/* --- COPPER TEXTURE / BLOB ACCENT (legacy helper — softened) --- */
+/* Previously this painted a near-opaque copper mass plus a full-bleed
+   `mix-blend-mode: overlay` grain across the whole section, which is
+   what washed the content out. Now it is a soft, blurred glow that sits
+   well behind the content, and the grain is barely-there soft-light. */
+.copper-blob-bg { position: relative; isolation: isolate; overflow: hidden; }
+.copper-blob-bg::before {
+  content: ''; position: absolute; top: -30%; right: -20%;
+  width: 54%; height: 130%;
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255,232,210,0.18), transparent 48%),
+    linear-gradient(150deg, #D69B6C 0%, #B5714A 38%, #8B5635 70%, #5E3822 100%);
+  border-radius: 62% 38% 55% 45% / 58% 42% 58% 42%;
+  filter: blur(26px);
+  opacity: 0.26; z-index: 0; pointer-events: none;
+}
+.copper-blob-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light; opacity: 0.25; pointer-events: none; z-index: 0;
+}
+.copper-blob-bg > * { position: relative; z-index: 1; }
+@media (max-width: 780px) {
+  .copper-blob-bg::before { width: 88%; height: 52%; top: -12%; right: -24%; opacity: 0.2; }
+}
+
+/* ============================================================
+   SOFT ORGANIC COPPER SHAPES
+   The decorative language from the company profile: irregular,
+   soft-edged copper/bronze blobs scattered sparsely behind the
+   content. Usage:
+
+     <section class="section has-decor">
+       <div class="decor" aria-hidden="true">
+         <span class="blob blob--copper blob--o2"
+               style="--s:380px; top:-120px; right:-140px"></span>
+       </div>
+       ...content...
+     </section>
+
+   `--s` sets the size; top/left/right/bottom position it. Shapes
+   are decoration only: they never take pointer events and are
+   always painted below the content layer.
+   ============================================================ */
+/* `.has-decor` isolates a stacking context, and `.decor` sits at
+   z-index:-1 inside it — behind the content but in front of the
+   section's own background.
+   Do NOT lift the content with `.has-decor > *:not(.decor) {
+   position: relative }`: that overrides `position: absolute` on
+   children like .hero-glow and .hero-scroll-hint, dropping them
+   into normal flow and pushing the whole hero down the page. */
+.has-decor { position: relative; isolation: isolate; overflow: hidden; }
+
+.decor {
+  position: absolute; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none;
+}
+
+.blob {
+  --s: 320px;
+  position: absolute; display: block;
+  width: var(--s); height: var(--s);
+  pointer-events: none;
+}
+
+/* Irregular rounded silhouettes — four hand-tuned variants so
+   repeated shapes never read as identical circles. */
+.blob--o1 { border-radius: 62% 38% 55% 45% / 58% 42% 58% 42%; }
+.blob--o2 { border-radius: 44% 56% 38% 62% / 52% 36% 64% 48%; }
+.blob--o3 { border-radius: 58% 42% 66% 34% / 40% 62% 38% 60%; }
+.blob--o4 { border-radius: 36% 64% 48% 52% / 60% 44% 56% 40%; }
+
+/* Petal silhouettes — rounded square, one corner pulled tight. This
+   is the shape used throughout the company profile; the tight corner
+   points a different way in each variant. */
+.blob--petal1 { border-radius: 46% 46% 46% 14%; }
+.blob--petal2 { border-radius: 46% 46% 14% 46%; }
+.blob--petal3 { border-radius: 14% 46% 46% 46%; }
+.blob--petal4 { border-radius: 46% 14% 46% 46%; }
+
+/* --- Tones --- */
+
+/* Metallic copper mass — for dark forge backgrounds. */
+.blob--copper {
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255,232,210,0.22), transparent 50%),
+    radial-gradient(circle at 74% 82%, rgba(20,12,6,0.45), transparent 58%),
+    linear-gradient(150deg, #D69B6C 0%, #B5714A 36%, #8B5635 68%, #5E3822 100%);
+  filter: blur(18px);
+  opacity: 0.3;
+}
+
+/* Pale copper wash — for parchment / off-white backgrounds. */
+.blob--tint {
+  background:
+    radial-gradient(circle at 34% 30%, rgba(212,149,110,0.5), transparent 58%),
+    linear-gradient(145deg, rgba(212,149,110,0.4) 0%, rgba(181,113,74,0.26) 55%, rgba(201,160,122,0.14) 100%);
+  filter: blur(34px);
+  opacity: 0.5;
+}
+
+/* Diffuse halo — the softest of the three, for edges and corners. */
+.blob--glow {
+  background: radial-gradient(circle at 50% 50%, rgba(181,113,74,0.34) 0%, rgba(181,113,74,0.1) 45%, transparent 72%);
+  filter: blur(12px);
+  opacity: 0.75;
+}
+
+/* Hairline outline — an echo of a shape rather than a shape. */
+.blob--ring {
+  background: none;
+  border: 1px solid rgba(181,113,74,0.22);
+  filter: none;
+  opacity: 0.55;
+}
+.blob--ring-light { border-color: rgba(201,160,122,0.28); }
+
+/* Brushed copper-leaf texture, as on the profile's shapes. Use on the
+   one or two largest shapes per page, not on every one. */
+.blob--foil {
+  background:
+    repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0 2px, transparent 2px 7px),
+    radial-gradient(circle at 26% 22%, rgba(255,238,222,0.42), transparent 52%),
+    radial-gradient(circle at 78% 84%, rgba(24,14,7,0.5), transparent 60%),
+    linear-gradient(142deg, #E0A879 0%, #C07E52 30%, #9A6038 62%, #6B4127 100%);
+  filter: blur(6px);
+  opacity: 0.34;
+}
+
+/* Optional metallic grain on a single large shape. */
+.blob--grain::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light; opacity: 0.6;
+}
+
+/* Fade modifiers for shapes that run off a section edge. */
+/* Fades a shape out toward its own edges, for shapes that run off a
+   section boundary and would otherwise end on a visible hard edge. */
+.blob--soften {
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 38%, transparent 76%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 38%, transparent 76%);
+}
+
+@media (max-width: 900px) {
+  /* Keep the composition sparse on small screens: shapes shrink to
+     two-thirds and the smallest accents drop out entirely. */
+  .blob { width: calc(var(--s) * 0.66); height: calc(var(--s) * 0.66); }
+  .blob--drop-mobile { display: none; }
 }
 
 /* --- SECTION BASE --- */
@@ -237,7 +482,7 @@ nav {
   margin: 2rem 0; line-height: 1.5;
 }
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2.5rem; }
-.stat-cell { background: rgba(255,255,255,0.6); padding: 1.4rem 1rem; text-align: center; }
+.stat-cell { background: var(--panel); padding: 1.4rem 1rem; text-align: center; }
 .stat-num { font-family: var(--ff-display); font-size: 2.4rem; font-weight: 300; color: var(--copper); line-height: 1; }
 .stat-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.4rem; }
 .about-visual { position: relative; }
@@ -271,7 +516,7 @@ nav {
 .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem; }
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
 .svc-card {
-  background: #fff; padding: 2.2rem 1.8rem;
+  background: var(--panel); padding: 2.2rem 1.8rem;
   transition: background 0.25s var(--ease);
   position: relative;
 }
@@ -293,6 +538,45 @@ nav {
   font-size: 0.8rem;
 }
 .svc-card:hover .svc-arrow { opacity: 1; }
+
+/* --- MATERIALS & PROCESSES STRIP (specializations) --- */
+.material-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: rgba(181,113,74,0.15); border: 1px solid rgba(181,113,74,0.15);
+  margin-top: 3.5rem;
+}
+.material-badge { background: var(--offwhite); padding: 1.8rem 1.2rem; text-align: center; transition: background 0.25s var(--ease); }
+.material-badge:hover { background: rgba(181,113,74,0.06); }
+.material-badge-label { font-family: var(--ff-display); font-size: 1.05rem; color: var(--copper-dark); letter-spacing: 0.01em; }
+.material-badge-sub { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+@media (max-width: 780px) { .material-strip { grid-template-columns: repeat(2, 1fr); } }
+
+/* --- LEADERSHIP / MD MESSAGE & CORE VALUES --- */
+#leadership { background: var(--forge); }
+.md-quote {
+  font-family: var(--ff-display); font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  font-style: italic; font-weight: 300; line-height: 1.75;
+  color: rgba(240,232,224,0.85); margin: 1.6rem 0 1.8rem;
+}
+.md-sign { font-family: var(--ff-display); font-size: 1rem; color: var(--gold); letter-spacing: 0.04em; }
+.md-sign span { display: block; font-family: var(--ff-body); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(201,160,122,0.45); margin-top: 4px; }
+.core-values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(181,113,74,0.12); border: 1px solid rgba(181,113,74,0.12); margin-top: 4rem; }
+.value-card { background: var(--forge-mid); padding: 2.2rem 1.6rem; text-align: center; transition: background 0.25s var(--ease); }
+.value-card:hover { background: var(--forge-light); }
+.value-num { font-family: var(--ff-display); font-size: 0.85rem; color: var(--copper); opacity: 0.6; margin-bottom: 0.8rem; }
+.value-name { font-family: var(--ff-display); font-size: 1.1rem; color: var(--parchment); margin-bottom: 0.6rem; }
+.value-desc { font-size: 0.76rem; line-height: 1.7; color: rgba(240,232,224,0.4); }
+@media (max-width: 780px) { .core-values-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* --- SAFETY STANDARDS & POLICY --- */
+#safety { background: var(--offwhite); }
+.safety-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem 2.2rem; margin-top: 3.2rem; }
+.safety-item { display: flex; gap: 1rem; align-items: flex-start; }
+.safety-icon { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(181,113,74,0.35); display: flex; align-items: center; justify-content: center; color: var(--copper); }
+.safety-text-title { font-family: var(--ff-display); font-size: 1rem; color: var(--forge); margin-bottom: 0.3rem; }
+.safety-text-desc { font-size: 0.8rem; line-height: 1.7; color: var(--text-muted); }
+@media (max-width: 900px) { .safety-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .safety-grid { grid-template-columns: 1fr; } }
 
 /* --- PORTFOLIO --- */
 #portfolio { background: var(--parchment); }
@@ -579,7 +863,9 @@ select.fi option { background: var(--forge); color: var(--parchment); }
 /* --- FOOTER --- */
 footer {
   background: var(--forge);
-  padding: 3rem 4rem;
+  /* Extra bottom padding so the fixed WhatsApp button never sits on
+     top of the copyright line. */
+  padding: 3rem 4rem 5.5rem;
   border-top: 1px solid rgba(181,113,74,0.15);
   display: block;
   width: 100%;
@@ -660,6 +946,17 @@ footer {
   #clients { padding: 3.5rem 1.25rem; }
   #contact { padding: 4rem 1.25rem !important; }
   footer { padding: 2.5rem 1.25rem; }
+
+  .hero-eyebrow { font-size: 0.58rem; letter-spacing: 0.2em; }
+  .nav-social { gap: 7px; margin-left: 2px; }
+  .nav-social a { width: 33px; height: 33px; }
+  .nav-social a svg { width: 17px; height: 17px; }
+  .hero-mark-rule { width: 150px; margin: 1.4rem 0 1.5rem; }
+  .hero-est-row { margin-top: 1.7rem; }
+  .hero-est-row i { width: 24px; }
+  .hero-actions { margin-top: 2.1rem; gap: 0.75rem; }
+  .hero-actions .btn-primary, .hero-actions .btn-ghost { padding: 0.85rem 1.7rem; font-size: 0.65rem; }
+  .footer-social { gap: 8px; }
 
   /* --- Hero --- */
   #hero { padding: 6rem 1.25rem 4rem; min-height: 92vh; }
@@ -797,7 +1094,15 @@ footer {
 }
 .page-hero > * { position: relative; z-index: 1; }
 
-/* Breadcrumb / back-to-home link */
+/* Breadcrumb / back-to-home link.
+   NOTE: the global `nav { position:sticky; height:72px; background:... }`
+   rule above matches ANY <nav> element, which was painting a dark 72px
+   bar behind the in-page breadcrumb. Reset it here. */
+nav.breadcrumb {
+  position: static; z-index: auto;
+  height: auto; padding: 0;
+  background: none; border-bottom: none;
+}
 .breadcrumb {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
@@ -817,9 +1122,146 @@ footer {
   gap: 14px;
 }
 .gallery-tile { aspect-ratio: 4 / 3; }
+/* --- INSTAGRAM-STYLE GALLERY TILES --- */
+/* Uniform squares, soft rounded corners, one consistent gap. Each
+   tile is a single image from the `projects` array and opens the
+   shared lightbox at exactly that image. */
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.ig-tile {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--forge-light);
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(58,45,37,0.06);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.ig-tile:hover,
+.ig-tile:focus-visible {
+  transform: scale(1.02);
+  box-shadow: 0 14px 34px -14px rgba(94,56,34,0.4);
+}
+.ig-tile:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; }
+.ig-tile img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.6s var(--ease);
+}
+.ig-tile:hover img,
+.ig-tile:focus-visible img { transform: scale(1.06); }
+
+/* Dark overlay + centred icon on hover */
+.ig-tile-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,20,16,0.82) 0%, rgba(26,20,16,0.42) 55%, rgba(26,20,16,0.3) 100%);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.35s var(--ease);
+}
+.ig-tile:hover .ig-tile-overlay,
+.ig-tile:focus-visible .ig-tile-overlay { opacity: 1; }
+.ig-tile-icon {
+  color: var(--parchment);
+  transform: scale(0.85); transition: transform 0.35s var(--ease);
+}
+.ig-tile:hover .ig-tile-icon { transform: scale(1); }
+
+/* Project title, revealed with the overlay */
+.ig-tile-caption {
+  position: absolute; left: 14px; right: 14px; bottom: 13px; z-index: 1;
+  font-family: var(--ff-display); font-style: italic;
+  font-size: 0.92rem; line-height: 1.35; color: var(--parchment);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.ig-tile:hover .ig-tile-caption,
+.ig-tile:focus-visible .ig-tile-caption { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+@media (max-width: 640px) {
+  .ig-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ig-tile { border-radius: 12px; }
+  .ig-tile-caption { font-size: 0.82rem; left: 10px; right: 10px; bottom: 10px; }
+}
+
+/* ============================================================
+   GALLERY PAGE HERO
+   Full-width, centred, dark forge ground with copper shapes
+   drifting behind it and a gradient that resolves cleanly into
+   the section below. No logo lockup, no split panel — one title,
+   one line of copy, two actions.
+   ============================================================ */
+.gh {
+  position: relative; isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(130% 100% at 50% -10%, #33241A 0%, #241A13 46%, var(--forge) 100%);
+  padding: 11rem 2rem 7rem;
+  text-align: center;
+}
+/* Faint forge grid, same primitive as the homepage hero */
+.gh-grid {
+  position: absolute; inset: 0; z-index: 0; opacity: 0.03; pointer-events: none;
+  background-image:
+    linear-gradient(var(--copper) 1px, transparent 1px),
+    linear-gradient(90deg, var(--copper) 1px, transparent 1px);
+  background-size: 68px 68px;
+}
+/* Bottom fade so the hero resolves into the next section instead
+   of ending on a hard edge. */
+.gh-fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 190px; z-index: 1;
+  background: linear-gradient(to top, var(--forge) 0%, rgba(26,20,16,0.6) 45%, transparent 100%);
+  pointer-events: none;
+}
+.gh .decor { z-index: 0; }
+.gh-inner { position: relative; z-index: 2; max-width: 740px; margin: 0 auto; }
+.gh-eyebrow {
+  font-size: 0.64rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(201,160,122,0.5); margin-bottom: 1.6rem;
+}
+.gh-title {
+  font-family: var(--ff-display); font-weight: 300;
+  font-size: clamp(3rem, 8vw, 5.4rem); line-height: 1.02;
+  letter-spacing: -0.015em; color: var(--parchment);
+  margin: 0;
+}
+.gh-rule {
+  width: 72px; height: 1px; margin: 1.9rem auto 1.6rem;
+  background: linear-gradient(90deg, transparent, var(--copper), transparent);
+}
+.gh-sub {
+  font-family: var(--ff-display); font-style: italic; font-weight: 300;
+  font-size: clamp(1.02rem, 2.2vw, 1.22rem); line-height: 1.7;
+  color: rgba(232,213,192,0.66);
+  max-width: 500px; margin: 0 auto;
+}
+.gh-actions {
+  display: flex; gap: 1rem; justify-content: center; align-items: center;
+  flex-wrap: wrap; margin-top: 2.8rem;
+}
+
+@media (max-width: 640px) {
+  .gh { padding: 8.5rem 1.5rem 5rem; }
+  .gh-fade { height: 120px; }
+  .gh-actions { gap: 0.75rem; }
+  .gh-actions .btn-primary, .gh-actions .btn-ghost { padding: 0.85rem 1.6rem; font-size: 0.65rem; }
+}
+
 
 @media (max-width: 640px) {
   .page-hero { padding: 7rem 1.25rem 3.5rem; }
   .gallery-grid-wrap { grid-template-columns: 1fr; }
   .gallery-tile { aspect-ratio: 3 / 2; }
+}
+
+/* --- ACCESSIBILITY --- */
+a:focus-visible, button:focus-visible, .fi:focus-visible, .ig-tile:focus-visible {
+  outline: 2px solid var(--copper); outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ig-tile, .ig-tile img, .ig-tile-overlay, .ig-tile-caption { transition: none; }
+  .ig-tile:hover { transform: none; }
+  .ig-tile:hover img { transform: none; }
 }
