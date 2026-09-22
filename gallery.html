@@ -26,8 +26,12 @@
         background: var(--forge-light);
         box-shadow: 0 24px 60px -30px rgba(0,0,0,0.8);
       }
-      .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease); }
-      .carousel-slide.active { opacity: 1; }
+      /* Inactive slides are stacked in the same spot at opacity:0.
+         Without pointer-events:none they still sit in front of (or
+         tied with) the active slide in paint order and swallow its
+         clicks — cursor-only clicks would silently do nothing. */
+      .carousel-slide { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.8s var(--ease); }
+      .carousel-slide.active { opacity: 1; pointer-events: auto; }
       .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
       .carousel-slide-caption {
         position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem 1.8rem;
@@ -208,6 +212,20 @@
       <a href="index.html#contact" class="btn-ghost" style="border-color:rgba(181,113,74,0.35);color:var(--copper-dark)">Commission a Piece →</a>
     </div>
 
+    <!-- Category filters. Wired up by initGalleryFilters() in SWI2.js.
+         Each button's data-category must match a project's `category`
+         field exactly — see the guide at the top of SWI2.js before
+         adding, renaming or removing a category here. "All" is a
+         special case handled in JS, not a real category. -->
+    <div class="gallery-filters" role="group" aria-label="Filter gallery by category">
+      <button type="button" class="gallery-filter-btn is-active" data-category="All" aria-pressed="true">All</button>
+      <button type="button" class="gallery-filter-btn" data-category="Stairs & Railings" aria-pressed="false">Stairs &amp; Railings</button>
+      <button type="button" class="gallery-filter-btn" data-category="Gates & Entrances" aria-pressed="false">Gates &amp; Entrances</button>
+      <button type="button" class="gallery-filter-btn" data-category="Doors & Screens" aria-pressed="false">Doors &amp; Screens</button>
+      <button type="button" class="gallery-filter-btn" data-category="Furniture & Décor" aria-pressed="false">Furniture &amp; Décor</button>
+      <button type="button" class="gallery-filter-btn" data-category="Custom / Other" aria-pressed="false">Custom / Other</button>
+    </div>
+
     <!-- Populated dynamically from the `projects` array in SWI2.js
          via renderGalleryGrid(), so project data lives in one place. -->
     <div class="ig-grid" id="gallery-grid"></div>
@@ -300,10 +318,11 @@
 <script src="SWI2.js"></script>
 <script>
   /* ============================================================
-     FEATURED CAROUSEL — built from the same `projects` array and
-     `openLightbox()` function already defined in SWI2.js, so there
-     is a single source of truth for project data across the grid,
-     the carousel, and the lightbox. Runs after SWI2.js has loaded.
+     FEATURED CAROUSEL — built from `getFeaturedProjects()` (defined
+     in SWI2.js), which reads the same `projects` array as the grid
+     and the lightbox, filtered/ordered by each project's optional
+     `featured` and `featuredImage` fields. See the guide at the top
+     of SWI2.js to change what shows here. Runs after SWI2.js loads.
      ============================================================ */
   (function () {
     var track   = document.getElementById('carouselTrack');
@@ -314,21 +333,34 @@
 
     if (!track || typeof projects === 'undefined' || !projects.length) return;
 
+    // Falls back to "every project, first photo, in order" if
+    // getFeaturedProjects() isn't available for some reason, so the
+    // carousel never breaks even if SWI2.js changes in the future.
+    var slots = (typeof getFeaturedProjects === 'function')
+      ? getFeaturedProjects()
+      : projects.map(function (p, i) {
+          return { index: i, project: p, image: (p.images && p.images[0]) || '', imageIndex: 0 };
+        });
+
+    if (!slots.length) return;
+
     var active = 0;
     var timer = null;
 
-    projects.forEach(function (p, i) {
-      var cover = (p.images && p.images.length) ? p.images[0] : '';
+    slots.forEach(function (slot, i) {
+      var p = slot.project;
 
       var slide = document.createElement('div');
       slide.className = 'carousel-slide' + (i === 0 ? ' active' : '');
       slide.innerHTML =
-        '<img src="' + cover + '" alt="' + p.title + '" loading="lazy">' +
+        '<img src="' + slot.image + '" alt="' + p.title + '" loading="lazy">' +
         '<div class="carousel-slide-caption">' +
           '<div class="cs-title">' + p.title + '</div>' +
           '<div class="cs-sub">' + p.subtitle + '</div>' +
         '</div>';
-      slide.addEventListener('click', function () { openLightbox(i); });
+      // Opens the lightbox on the project's real index within
+      // `projects`, at the exact photo shown in this slide.
+      slide.addEventListener('click', function () { openLightbox(slot.index, slot.imageIndex); });
       track.appendChild(slide);
 
       var dot = document.createElement('span');
