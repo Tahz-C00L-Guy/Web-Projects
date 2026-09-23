@@ -585,6 +585,15 @@ function renderGalleryGrid() {
 }
 document.addEventListener('DOMContentLoaded', renderGalleryGrid);
 
+function initGalleryCategoryFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  if (!cat) return;
+
+  const btn = document.querySelector('.gallery-filter-btn[data-category="' + cat + '"]');
+  if (btn) btn.click();
+}
+
 // ============================================================
 // GALLERY PAGE — CATEGORY FILTER BUTTONS + ANIMATION
 //
@@ -719,7 +728,10 @@ function initGalleryFilters() {
     });
   });
 }
-document.addEventListener('DOMContentLoaded', initGalleryFilters);
+document.addEventListener('DOMContentLoaded', () => {
+  initGalleryFilters();
+  initGalleryCategoryFromURL();
+});
 
 // ============================================================
 // MOBILE NAV TOGGLE
