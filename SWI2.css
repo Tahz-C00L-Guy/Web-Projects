@@ -515,6 +515,11 @@ nav {
 #services { background: var(--offwhite); }
 .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem; }
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+a.svc-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
 .svc-card {
   background: var(--panel); padding: 2.2rem 1.8rem;
   transition: background 0.25s var(--ease);
