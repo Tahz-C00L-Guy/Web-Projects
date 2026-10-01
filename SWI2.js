@@ -425,6 +425,22 @@ const projects = [
   // and paste it above this line (don't forget a comma after the
   // closing `}` of the project before it).
 ];
+// ================================================================
+// IMAGE ALT TEXT
+// Every photo gets a text alternative. By default it is built from the
+// project title ("<title> — photo 2 of 3"). For better accessibility and
+// SEO you can describe each photo yourself by adding an optional list to a
+// project, in the same order as `images`:
+//     alts: ["Front view of the gate", "Close-up of the scrollwork", ...]
+// ================================================================
+function imageAlt(p, i) {
+  if (p.alts && p.alts[i]) return p.alts[i];
+  const n = (p.images && p.images.length) || 1;
+  return p.title + (n > 1 ? ' \u2014 photo ' + (i + 1) + ' of ' + n : '');
+}
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 // ================================================================
 // FEATURED HIGHLIGHTS HELPER
@@ -458,9 +474,16 @@ function getFeaturedProjects() {
 // ============================================================
 let currentProject = null;
 let currentImg = 0;
+let lightboxOpener = null;   // element to return focus to on close
+
+function isLightboxOpen() {
+  const lb = document.getElementById('lightbox');
+  return !!(lb && lb.classList.contains('open'));
+}
 
 function openLightbox(index, imgIndex) {
   const p = projects[index];
+  lightboxOpener = document.activeElement;
   currentProject = p;
   currentImg = 0;
   document.getElementById('lb-title').textContent = p.title;
@@ -470,11 +493,16 @@ function openLightbox(index, imgIndex) {
   showImage(imgIndex || 0);
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
+  const closeBtn = document.querySelector('#lightbox .lb-close');
+  if (closeBtn) closeBtn.focus();
 }
 
 function closeLightbox() {
+  if (!isLightboxOpen()) return;
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
+  if (lightboxOpener && typeof lightboxOpener.focus === 'function') lightboxOpener.focus();
+  lightboxOpener = null;
 }
 
 function showImage(i) {
@@ -489,6 +517,7 @@ function showImage(i) {
     ph.style.display = 'none';
     img.style.display = 'block';
     img.src = p.images[currentImg];
+    img.alt = imageAlt(p, currentImg);
     counter.textContent = (currentImg + 1) + ' / ' + p.images.length;
     document.querySelectorAll('.lb-thumb').forEach((t, idx) => {
       t.classList.toggle('active', idx === currentImg);
@@ -500,19 +529,21 @@ function showImage(i) {
   }
 }
 
-function lbPrev() { showImage(currentImg - 1); }
-function lbNext() { showImage(currentImg + 1); }
+function lbPrev() { if (currentProject) showImage(currentImg - 1); }
+function lbNext() { if (currentProject) showImage(currentImg + 1); }
 
 function renderThumbs(p) {
   const container = document.getElementById('lb-thumbs');
   container.innerHTML = '';
   if (p.images && p.images.length > 0) {
     p.images.forEach((url, i) => {
-      const t = document.createElement('div');
+            const t = document.createElement('button');
+      t.type = 'button';
       t.className = 'lb-thumb' + (i === 0 ? ' active' : '');
+      t.setAttribute('aria-label', 'Show photo ' + (i + 1) + ' of ' + p.images.length);
       t.onclick = () => showImage(i);
       const im = document.createElement('img');
-      im.src = url; im.alt = 'Project image ' + (i + 1);
+      im.src = url; im.alt = '';   // the button's label carries the meaning
       t.appendChild(im);
       container.appendChild(t);
     });
@@ -533,9 +564,21 @@ if (lightboxEl) {
   });
 }
 document.addEventListener('keydown', function(e) {
+  // Only act while the lightbox is open. (Previously the arrow keys called
+  // lbPrev/lbNext on every page, which threw a TypeError when no project
+  // was loaded, e.g. on the home page.)
+  if (!isLightboxOpen()) return;
   if (e.key === 'Escape') closeLightbox();
   if (e.key === 'ArrowLeft') lbPrev();
   if (e.key === 'ArrowRight') lbNext();
+  if (e.key === 'Tab') {   // keep keyboard focus inside the dialog
+    const focusable = Array.from(document.querySelectorAll('#lightbox button')).filter(function (b) { return b.offsetParent !== null; });
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    else if (!document.getElementById('lightbox').contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+  }
 });
 
 // ============================================================
@@ -566,9 +609,9 @@ function renderGalleryGrid() {
       tile.dataset.category = category; // read by applyGalleryFilter() below
       tile.setAttribute('role', 'button');
       tile.setAttribute('tabindex', '0');
-      tile.setAttribute('aria-label', 'Open ' + p.title + ' image ' + (iIdx + 1) + ' in lightbox');
+            tile.setAttribute('aria-label', 'Open ' + p.title + ', photo ' + (iIdx + 1) + ' of ' + imgs.length + ', in a larger view');
       tile.innerHTML =
-        '<img src="' + src + '" alt="' + p.title + '" loading="lazy">' +
+        '<img src="' + src + '" alt="' + escapeHtml(imageAlt(p, iIdx)) + '" loading="lazy" decoding="async">' +
         '<div class="ig-tile-overlay">' +
           '<svg class="ig-tile-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
             '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>' +
@@ -745,24 +788,92 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.classList.remove('open');
     panel.classList.remove('open');
     toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
   }
   function toggleMenu() {
     const isOpen = panel.classList.toggle('open');
     toggle.classList.toggle('open', isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panel.classList.contains('open')) { closeMenu(); toggle.focus(); }
+  });
   toggle.addEventListener('click', toggleMenu);
   panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   window.addEventListener('resize', () => { if (window.innerWidth > 640) closeMenu(); });
 })();
 
-// Redirect to Thank You page after form submission
-// (guarded: only index.html has the contact form)
-const contactFormEl = document.getElementById('contact-form');
-if (contactFormEl) {
-  contactFormEl.addEventListener('submit', function() {
-    setTimeout(() => {
-      window.location.href = "https://star-wrought-iron.vercel.app/ThankYou.html";
-    }, 1800); // 1.8 seconds delay
+// ============================================================
+// CONTACT FORM (index.html only)
+// Submits to Formspree in the background (fetch) so we can show a
+// clear success / error message, and only go to the Thank-You page
+// once Formspree has actually accepted the enquiry.
+// (The old version redirected 1.8 s after clicking Send whether or not
+// the submission had succeeded, and could cancel the request mid-flight.)
+// If JavaScript is unavailable the form still works as a normal POST:
+// Formspree then redirects using the hidden `_next` field.
+// ============================================================
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+  const btn = document.getElementById('form-submit-btn');
+  const status = document.getElementById('form-status');
+  const consent = document.getElementById('consent');
+  const consentErr = document.getElementById('consent-error');
+  const THANKS = 'ThankYou.html';
+
+  function say(msg, state, html) {
+    status.hidden = false;
+    status.style.display = '';
+    status.setAttribute('data-state', state);
+    if (html) status.innerHTML = msg; else status.textContent = msg;
+  }
+
+  if (consent) consent.addEventListener('change', function () {
+    if (consent.checked) { consent.removeAttribute('aria-invalid'); if (consentErr) consentErr.hidden = true; }
   });
-}
+
+  form.addEventListener('submit', function (e) {
+    // Belt and braces: `required` already blocks this, but never send
+    // personal data without the ticked consent box.
+    if (consent && !consent.checked) {
+      e.preventDefault();
+      consent.setAttribute('aria-invalid', 'true');
+      if (consentErr) consentErr.hidden = false;
+      consent.focus();
+      return;
+    }
+    if (!window.fetch || !window.FormData) return;          // fall back to native POST
+    e.preventDefault();
+
+    // Spam honeypot filled in => pretend success, send nothing.
+    const trap = form.querySelector('input[name="_gotcha"]');
+    if (trap && trap.value) { window.location.href = THANKS; return; }
+
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Sending\u2026';
+    say('Sending your enquiry\u2026', 'info');
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (res.ok) {
+        say('Thank you \u2014 your enquiry has been sent.', 'ok');
+        window.location.href = THANKS;
+      } else {
+        throw new Error('HTTP ' + res.status);
+      }
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = label;
+      say('Sorry, your enquiry could not be sent. Please try again, or contact us on ' +
+          '<a href="tel:+971506454953">050 645 4953</a> or ' +
+          '<a href="https://wa.me/971526588117" target="_blank" rel="noopener noreferrer">WhatsApp</a>.' +
+          '', 'error', true);
+    });
+  });
+})();
