@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   'use strict';
   var KEY = 'swi_cookie_consent';
   var VERSION = 1;
@@ -88,7 +88,7 @@
     if (!fromBanner) return;
     var opener = document.querySelector('[data-cookie-settings]');
     if (opener && document.activeElement && document.activeElement.closest && document.activeElement.closest('.cc-banner')) {
-      try { opener.focus(); } catch (e) {}
+      try {} catch (e) {}
     }
   }
 
