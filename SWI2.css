@@ -2079,4 +2079,34 @@ button.lb-thumb { background: var(--forge-light); }
   .cc-actions { width: 100%; }
   .cc-btn { flex: 1; }
 }
+.footer-details {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 3rem;
+  padding-bottom: 2rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(181,113,74,0.1);
+}
 
+.footer-col h2 {
+  font-family: var(--ff-body); font-size: 0.64rem; font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem;
+}
+
+.footer-col p, .footer-col address { font-size: 0.8rem; line-height: 1.75; color: var(--on-dark-soft); font-style: normal; }
+
+.footer-col a { color: var(--on-dark); text-decoration: underline; text-underline-offset: 3px; }
+
+.footer-col a:hover { color: var(--copper-on-dark); }
+
+.footer-legal { display: flex; flex-wrap: wrap; gap: 0.5rem 1.8rem; margin-bottom: 1.4rem; list-style: none; }
+
+.footer-legal a { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-dark); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(201,160,122,0.4); }
+
+.footer-legal a:hover { color: var(--copper-on-dark); }
+
+.footer-legal button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-dark); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(201,160,122,0.4); }
+
+.footer-legal button:hover { color: var(--copper-on-dark); }
+
+.footer-lic { font-size: 0.72rem; color: var(--on-dark-soft); letter-spacing: 0.04em; margin-bottom: 1.2rem; }
+
+@media (max-width: 900px) {
+  .footer-details { grid-template-columns: 1fr 1fr; }
+}
