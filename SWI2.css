@@ -1989,3 +1989,94 @@ button.lb-thumb { background: var(--forge-light); }
 .value-num { opacity: 1; }        /* old rule dimmed it to 0.6 */
 .svc-num { display: none; }       /* the ghost numerals are now drawn by .svc-card::before above (decorative, not announced) */
 
+/* ===== Cookie consent banner + map gate ===== */
+.cc-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: #1a1410;
+  border-top: 1px solid rgba(201,160,122,0.25);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+}
+.cc-banner[hidden] { display: none !important; }
+.cc-title {
+  font-family: var(--ff-display, Georgia, serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f0e8e0;
+  margin: 0;
+}
+.cc-text {
+  flex: 1 1 280px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(240,232,224,0.7);
+  margin: 0;
+}
+.cc-text a { color: #c9a07a; text-decoration: underline; }
+.cc-actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+.cc-btn {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.2rem;
+  border: 1px solid rgba(201,160,122,0.4);
+  background: transparent;
+  color: #f0e8e0;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.cc-btn--accept {
+  background: #c9a07a;
+  color: #1a1410;
+  border-color: #c9a07a;
+}
+.cc-btn--accept:hover { background: #d4b08e; }
+.cc-btn--reject:hover { background: rgba(201,160,122,0.12); }
+
+.map-consent {
+  padding: 1.5rem;
+  background: rgba(0,0,0,0.25);
+  text-align: center;
+  color: rgba(240,232,224,0.7);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.map-consent p { margin: 0 0 1rem; }
+.map-consent a { color: #c9a07a; }
+
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  list-style: none;
+  padding: 1.25rem 0 0;
+  margin: 1.25rem 0 0;
+  border-top: 1px solid rgba(201,160,122,0.12);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+.footer-legal a,
+.footer-legal button {
+  background: none;
+  border: none;
+  color: rgba(240,232,224,0.45);
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  text-decoration: none;
+}
+.footer-legal a:hover,
+.footer-legal button:hover { color: #c9a07a; }
+
+@media (max-width: 640px) {
+  .cc-banner { flex-direction: column; align-items: stretch; padding: 1rem; }
+  .cc-actions { width: 100%; }
+  .cc-btn { flex: 1; }
+}
+
