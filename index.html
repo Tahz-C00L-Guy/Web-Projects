@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Star Wrought Iron | Premium Ironcraft UAE</title>
-    <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
+    <title>Star Wrought Iron | Custom Wrought Iron & Metal Fabrication, UAE</title>
+    <meta name="description" content="Star Wrought Iron (L.L.C.) — custom wrought iron gates, staircases, railings, doors, screens and metal fabrications for homes and businesses across the UAE.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
+    <link rel="preconnect" href="https://res.cloudinary.com">
+    <link rel="preload" href="fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Fonts are self-hosted (see @font-face at the top of SWI2.css): no request to Google Fonts. -->
+    <link href="SWI2.css" rel="stylesheet">
 </head>
 <body>
 
@@ -27,20 +33,17 @@
   </filter>
 </svg>
 
-<!-- === GOOGLE FONTS === -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="SWI2.css" rel="stylesheet">
 
 <!-- === NAV === -->
-<nav>
+<nav aria-label="Main">
   <div class="nav-brand">
     <a href="#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
-      <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="" aria-hidden="true" style="height:30px;width:auto;object-fit:contain;opacity:0.95">
-      <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
+      <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="" style="height:30px;width:auto;object-fit:contain;opacity:0.95">
+      <span class="nav-wordmark">Star<span aria-hidden="true">✦</span>Wrought Iron<span class="visually-hidden"> — home</span></span>
     </a>
     <div class="nav-social">
-      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
     </div>
   </div>
   <ul class="nav-links">
@@ -51,20 +54,25 @@
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+  <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile-panel">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<div class="nav-mobile-panel" id="nav-mobile-panel">
+<div class="nav-mobile-panel" id="nav-mobile-panel" role="navigation" aria-label="Mobile menu">
   <a href="#hero">Home</a>
   <a href="#about">Heritage</a>
   <a href="#services">Specialisations</a>
   <a href="gallery.html">Gallery</a>
   <a href="#process">Process</a>
   <a href="#contact">Contact</a>
+  <a class="nav-legal" href="privacy-policy.html">Privacy Policy</a>
+  <a class="nav-legal" href="terms-and-conditions.html">Terms &amp; Conditions</a>
+  <a class="nav-legal" href="cookie-policy.html">Cookie Policy</a>
+  <a class="nav-legal" href="refund-policy.html">Refund &amp; Cancellation Policy</a>
 </div>
 
+<main id="main" tabindex="-1">
 <!-- === HERO === -->
 <section id="hero" class="has-decor">
   <div class="hero-grid-bg" aria-hidden="true"></div>
@@ -83,23 +91,24 @@
   </div>
 
   <div class="hero-inner">
+    <h1 class="visually-hidden">Star Wrought Iron — custom wrought iron and metal fabrication in the UAE</h1>
     <p class="hero-eyebrow hero-rise" style="--d:0s">Premium Ironcraft · UAE · Family Heritage</p>
 
     <!-- White background removed via the #hero-logo-knockout filter
          (defined at the top of <body>, wired up in SWI2.css). -->
     <img class="hero-logo hero-rise" style="--d:0.08s"
          src="https://res.cloudinary.com/dt8tx4kz1/image/upload/v1789630993/image_2026-09-17_114307866_ayepze.png"
-         alt="Star Wrought Iron">
+         alt="Star Wrought Iron logo">
 
     <div class="hero-mark-rule hero-rise" style="--d:0.18s" aria-hidden="true">
-      <i></i><span>✦</span><i></i>
+      <i></i><span aria-hidden="true">✦</span><i></i>
     </div>
 
-    <p class="hero-tagline hero-rise" style="--d:0.26s">"Custom handmade metal fabrications since 1990."</p>
+    <p class="hero-tagline hero-rise" style="--d:0.26s">"Custom wrought iron and metal fabrications since 1990."</p>
 
     <div class="hero-est-row hero-rise" style="--d:0.34s">
       <i aria-hidden="true"></i>
-      <span class="hero-est">Est. Dubai 1990</span>
+      <span class="hero-est">Serving the UAE since 1990</span>
       <i aria-hidden="true"></i>
     </div>
 
@@ -148,14 +157,14 @@
       <div>
         <p class="eyebrow">Our Heritage</p>
         <h2 class="display-title">A Family <em>Legacy</em><br>of Ironcraft</h2>
-        <p class="body-copy">Founded in 1990 in the UAE, Star Wrought Iron has spent over three decades mastering the ancient art of wrought iron fabrication. What began as a family workshop has grown into the Northern Emirates' most trusted name in bespoke metalwork — serving luxury residential estates, landmark commercial developments, and heritage restoration projects across the region.</p>
-        <blockquote class="about-pull">"Every piece carries the weight of tradition and the precision of modern craftsmanship — hand-shaped, hand-finished, built to endure."</blockquote>
-        <p class="body-copy">Our artisans — many of whom have worked with the family for over two decades — bring an intimate knowledge of iron's character to every commission. From grand estate gates to delicate interior screens, the hand is always present.</p>
+        <p class="body-copy">Founded in 1990 in the UAE, Star Wrought Iron has spent over three decades mastering the ancient art of wrought iron fabrication. What began as a family workshop has grown into a respected name in bespoke metalwork — serving residential, commercial and heritage restoration projects across the UAE.</p>
+        <blockquote class="about-pull">"Every piece carries the weight of tradition and the precision of modern craftsmanship — shaped and finished by skilled hands, built to endure."</blockquote>
+        <p class="body-copy">Our artisans bring an intimate knowledge of iron's character to every commission. From grand estate gates to delicate interior screens, skilled hands are involved at every stage.</p>
         <div class="stats-row">
           <div class="stat-cell"><div class="stat-num">35+</div><div class="stat-lbl">Years of Craft</div></div>
-          <div class="stat-cell"><div class="stat-num">2K+</div><div class="stat-lbl">Projects</div></div>
-          <div class="stat-cell"><div class="stat-num">UAE</div><div class="stat-lbl">Nationwide</div></div>
-          <div class="stat-cell"><div class="stat-num">100%</div><div class="stat-lbl">Handmade</div></div>
+          <div class="stat-cell"><div class="stat-num">6</div><div class="stat-lbl">Specialisations</div></div>
+          <div class="stat-cell"><div class="stat-num">UAE</div><div class="stat-lbl">Installation</div></div>
+          <div class="stat-cell"><div class="stat-num">In-house</div><div class="stat-lbl">Fabrication</div></div>
         </div>
       </div>
     </div>
@@ -170,29 +179,29 @@
   </div>
   <div class="inner">
     <div style="max-width:780px;margin:0 auto;text-align:center">
-      <p class="eyebrow" style="justify-content:center;color:var(--copper)">A Word From Our Managing Director</p>
+      <p class="eyebrow eyebrow--dark" style="justify-content:center">A Word From Our Managing Director</p>
       <blockquote class="md-quote">"Since 1990, Star Wrought Iron has been built on a simple belief — that ironwork is not just structural, it's personal. Every gate, staircase and screen that leaves our workshop carries the hands of the craftsmen who shaped it, and the trust of the families and businesses who welcomed us into their homes and developments. As we continue to grow across the UAE, our commitment remains the same: honest work, delivered on time, built to last a lifetime."</blockquote>
-      <div class="md-sign">M. Sajid<span>Managing Director, Star Wrought Iron</span></div>
+      <div class="md-sign">Muhammad Sajid Muhammad Sadiq<span>Managing Director, Star Wrought Iron (L.L.C.)</span></div>
     </div>
 
     <div class="core-values-grid">
       <div class="value-card">
-        <div class="value-num">01</div>
+        <div class="value-num" aria-hidden="true">01</div>
         <div class="value-name">Craftsmanship</div>
-        <div class="value-desc">Every piece is hand-shaped and finished with the same precision as our first commission in 1990.</div>
+        <div class="value-desc">Every piece is shaped and finished with the same care and attention to detail as our first commission.</div>
       </div>
       <div class="value-card">
-        <div class="value-num">02</div>
+        <div class="value-num" aria-hidden="true">02</div>
         <div class="value-name">Integrity</div>
         <div class="value-desc">Transparent pricing, honest timelines, and work we stand behind long after installation.</div>
       </div>
       <div class="value-card">
-        <div class="value-num">03</div>
+        <div class="value-num" aria-hidden="true">03</div>
         <div class="value-name">Safety First</div>
         <div class="value-desc">Strict workshop and site safety protocols protect our team and your property on every job.</div>
       </div>
       <div class="value-card">
-        <div class="value-num">04</div>
+        <div class="value-num" aria-hidden="true">04</div>
         <div class="value-name">Client Partnership</div>
         <div class="value-desc">We listen first, then design — treating every brief as a genuine collaboration.</div>
       </div>
@@ -242,7 +251,6 @@
     <div class="services-grid">
 
       <a href="gallery.html?category=Gates%20%26%20Entrances" class="svc-card">
-        <div class="svc-num">01</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <rect x="3" y="3" width="30" height="30" rx="0.5"/>
           <line x1="3" y1="18" x2="33" y2="18"/>
@@ -252,11 +260,10 @@
         </svg>
         <div class="svc-name">Gates & Entrances</div>
         <div class="svc-desc">Grand driveway gates, pedestrian entrances, and estate boundary systems — designed to command presence and endure generations.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
       <a href="gallery.html?category=Stairs%20%26%20Railings" class="svc-card">
-        <div class="svc-num">02</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <line x1="6" y1="32" x2="6" y2="4"/><line x1="30" y1="32" x2="30" y2="4"/>
           <path d="M6,10 Q18,4 30,10"/>
@@ -266,11 +273,10 @@
         </svg>
         <div class="svc-name">Staircases & Railings</div>
         <div class="svc-desc">Interior and exterior staircases, balustrades and handrails — from classical scrollwork to clean contemporary lines.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
       <a href="gallery.html?category=Doors%20%26%20Screens" class="svc-card">
-        <div class="svc-num">03</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <rect x="4" y="6" width="28" height="26" rx="0.5"/>
           <path d="M4,6 Q18,0 32,6"/>
@@ -280,11 +286,10 @@
         </svg>
         <div class="svc-name">Doors & Screens</div>
         <div class="svc-desc">Ornamental iron doors, Mashrabiya-inspired screens and room dividers — merging Arabesque heritage with modern craft.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
       <a href="gallery.html?category=Furniture%20%26%20Décor" class="svc-card">
-        <div class="svc-num">04</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <rect x="4" y="24" width="28" height="8" rx="0.5"/>
           <rect x="10" y="13" width="16" height="11"/>
@@ -294,11 +299,10 @@
         </svg>
         <div class="svc-name">Furniture & Décor</div>
         <div class="svc-desc">Custom iron furniture, chandeliers, wall art and sculptural pieces that anchor a space with enduring character.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
       <a href="gallery.html?category=Custom%20%2F%20Other" class="svc-card">
-        <div class="svc-num">05</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <circle cx="18" cy="18" r="13"/>
           <path d="M18,5 Q24,12 18,18 Q12,24 18,31"/>
@@ -307,18 +311,17 @@
         </svg>
         <div class="svc-name">Restoration</div>
         <div class="svc-desc">Expert restoration and repair of heritage ironwork — returning antique gates, railings and fixtures to their original glory.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
       <a href="gallery.html?category=Custom%20%2F%20Other" class="svc-card">
-        <div class="svc-num">06</div>
         <svg class="svc-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
           <polygon points="18,3 22,13 33,13 24,19 27,30 18,24 9,30 12,19 3,13 14,13"/>
           <circle cx="18" cy="18" r="5" stroke-width="0.6"/>
         </svg>
         <div class="svc-name">Custom Commissions</div>
         <div class="svc-desc">Fully bespoke design-to-installation commissions for architects, designers and private clients seeking one-of-a-kind metalwork.</div>
-        <div class="svc-arrow">→</div>
+        <div class="svc-arrow" aria-hidden="true">→</div>
       </a>
 
     </div>
@@ -363,50 +366,40 @@
   </div>
   <div class="inner">
     <div style="text-align:center;margin-bottom:4rem">
-      <p class="eyebrow" style="justify-content:center;color:var(--copper)">Client Words</p>
+      <p class="eyebrow eyebrow--dark" style="justify-content:center">Client Words</p>
       <h2 class="display-title" style="color:var(--parchment);text-align:center">What Our <em>Clients</em> Say</h2>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(181,113,74,0.12);border:1px solid rgba(181,113,74,0.12)">
-
-      <!-- Testimonial 1 -->
-      <div style="background:var(--forge-mid);padding:2.4rem 2rem;display:flex;flex-direction:column;gap:1.4rem;transition:background 0.25s" onmouseover="this.style.background='#2E2118'" onmouseout="this.style.background='var(--forge-mid)'">
-        <div style="font-size:2.8rem;font-family:'Cormorant Garamond',serif;color:rgba(181,113,74,0.3);line-height:0.8;margin-bottom:0.2rem">"</div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;color:rgba(240,232,224,0.75);line-height:1.75">The gates SWI crafted for our Emirates Hills villa are nothing short of extraordinary. Every visitor stops to admire them. The attention to detail is unlike anything we've seen.</p>
-        <div style="border-top:1px solid rgba(181,113,74,0.15);padding-top:1.2rem;margin-top:auto">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:400;color:var(--gold);letter-spacing:0.06em">Ahmed Al Mansoori</div>
-          <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(201,160,122,0.35);margin-top:3px">Private Villa Owner · Dubai</div>
-        </div>
-      </div>
-
-      <!-- Testimonial 2 -->
-      <div style="background:var(--forge-mid);padding:2.4rem 2rem;display:flex;flex-direction:column;gap:1.4rem;transition:background 0.25s" onmouseover="this.style.background='#2E2118'" onmouseout="this.style.background='var(--forge-mid)'">
-        <div style="font-size:2.8rem;font-family:'Cormorant Garamond',serif;color:rgba(181,113,74,0.3);line-height:0.8;margin-bottom:0.2rem">"</div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;color:rgba(240,232,224,0.75);line-height:1.75">We've commissioned SWI for three commercial projects across Dubai and Sharjah. Their professionalism, craftsmanship and ability to deliver on time sets them apart from anyone else in the region.</p>
-        <div style="border-top:1px solid rgba(181,113,74,0.15);padding-top:1.2rem;margin-top:auto">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:400;color:var(--gold);letter-spacing:0.06em">Rania Khalil</div>
-          <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(201,160,122,0.35);margin-top:3px">Interior Architect · Sharjah</div>
-        </div>
-      </div>
-
-      <!-- Testimonial 3 -->
-      <div style="background:var(--forge-mid);padding:2.4rem 2rem;display:flex;flex-direction:column;gap:1.4rem;transition:background 0.25s" onmouseover="this.style.background='#2E2118'" onmouseout="this.style.background='var(--forge-mid)'">
-        <div style="font-size:2.8rem;font-family:'Cormorant Garamond',serif;color:rgba(181,113,74,0.3);line-height:0.8;margin-bottom:0.2rem">"</div>
-        <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;color:rgba(240,232,224,0.75);line-height:1.75">A family business with true soul. From the first consultation to the final installation, SWI treated our project with care and precision. The wrought iron staircase is now the centrepiece of our home.</p>
-        <div style="border-top:1px solid rgba(181,113,74,0.15);padding-top:1.2rem;margin-top:auto">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:400;color:var(--gold);letter-spacing:0.06em">Khalid Bin Rashid</div>
-          <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(201,160,122,0.35);margin-top:3px">Homeowner · Abu Dhabi</div>
-        </div>
-      </div>
-
+    <!-- OWNER ACTION: keep written consent (WhatsApp/e-mail is fine) from each client named below
+         for publishing their name, role/location and quote. See privacy-policy.html section 11. -->
+    <div class="tst-grid">
+      <figure class="tst-card">
+        <div class="tst-mark" aria-hidden="true">"</div>
+        <blockquote class="tst-quote">The gates SWI crafted for our Emirates Hills villa are nothing short of extraordinary. Every visitor stops to admire them. The attention to detail is unlike anything we've seen.</blockquote>
+        <figcaption class="tst-by">
+          <div class="tst-name">Ahmed Al Mansoori</div>
+          <div class="tst-role">Private Villa Owner · Dubai</div>
+        </figcaption>
+      </figure>
+      <figure class="tst-card">
+        <div class="tst-mark" aria-hidden="true">"</div>
+        <blockquote class="tst-quote">We've commissioned SWI for three commercial projects across Dubai and Sharjah. Their professionalism, craftsmanship and ability to deliver on time sets them apart from anyone else in the region.</blockquote>
+        <figcaption class="tst-by">
+          <div class="tst-name">Rania Khalil</div>
+          <div class="tst-role">Interior Architect · Sharjah</div>
+        </figcaption>
+      </figure>
+      <figure class="tst-card">
+        <div class="tst-mark" aria-hidden="true">"</div>
+        <blockquote class="tst-quote">A family business with true soul. From the first consultation to the final installation, SWI treated our project with care and precision. The wrought iron staircase is now the centrepiece of our home.</blockquote>
+        <figcaption class="tst-by">
+          <div class="tst-name">Khalid Bin Rashid</div>
+          <div class="tst-role">Homeowner · Abu Dhabi</div>
+        </figcaption>
+      </figure>
     </div>
 
-    <!-- Bottom trust line -->
-    <div style="text-align:center;margin-top:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem">
-      <div style="height:1px;width:80px;background:linear-gradient(90deg,transparent,rgba(181,113,74,0.3))"></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;font-style:italic;letter-spacing:0.14em;color:rgba(201,160,122,0.3)">Over 2,000 satisfied clients across the UAE since 1990</p>
-      <div style="height:1px;width:80px;background:linear-gradient(90deg,rgba(181,113,74,0.3),transparent)"></div>
-    </div>
+    <div class="trust-line"><i aria-hidden="true"></i><p>Trusted by homeowners, designers and businesses across the UAE</p><i aria-hidden="true"></i></div>
   </div>
 </section>
 
@@ -430,7 +423,7 @@
   </div>
   <div class="inner">
     <div style="text-align:center;margin-bottom:0.5rem">
-      <p class="eyebrow" style="justify-content:center">How We Work</p>
+      <p class="eyebrow eyebrow--dark" style="justify-content:center">How We Work</p>
       <h2 class="display-title process-title" style="text-align:center">The <em>Craft</em> Process</h2>
     </div>
     <div class="process-steps">
@@ -447,12 +440,12 @@
       <div class="process-step">
         <div class="process-step-num">III</div>
         <div class="process-step-name">Fabrication</div>
-        <div class="process-step-desc">Every element shaped and finished by hand in our Umm Al Quwain workshop. No shortcuts.</div>
+        <div class="process-step-desc">Every element fabricated and finished by our own team in our Umm Al Quwain workshop. No shortcuts.</div>
       </div>
       <div class="process-step">
         <div class="process-step-num">IV</div>
         <div class="process-step-name">Installation</div>
-        <div class="process-step-desc">Our team handles delivery and installation across the UAE, with full aftercare support.</div>
+        <div class="process-step-desc">Our team handles delivery and installation across the UAE, with aftercare support.</div>
       </div>
     </div>
   </div>
@@ -524,8 +517,8 @@
       <div class="safety-item">
         <div class="safety-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
         <div>
-          <div class="safety-text-title">Insured & Compliant</div>
-          <div class="safety-text-desc">Fully licensed operations, compliant with UAE municipality and civil defence requirements.</div>
+          <div class="safety-text-title">Licensed Operations</div>
+          <div class="safety-text-desc">Operating under Dubai Economy &amp; Tourism trade licence no. 301117 and applicable UAE regulations.</div>
         </div>
       </div>
     </div>
@@ -552,13 +545,13 @@
     <span class="blob blob--glow blob--o4 blob--drop-mobile" style="--s:300px; bottom:-140px; left:-110px"></span>
   </div>
   <div style="max-width:1080px;margin:0 auto">
-    <p class="clients-eyebrow">Trusted by leading names across the UAE</p>
+    <h2 class="clients-eyebrow">Some of the organisations we have worked with</h2>
     <div style="max-width:900px;margin:0 auto;border:1px solid rgba(181,113,74,0.12);overflow:hidden">
       <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-18_193357_upef0m.png"
-        alt="SWI Clients"
+        alt="Logos of some of the businesses and organisations Star Wrought Iron has worked with" loading="lazy" decoding="async"
         style="width:100%;display:block;filter:grayscale(20%) brightness(0.9) sepia(10%)">
       <div style="padding:1rem 1.5rem;border-top:1px solid rgba(181,113,74,0.12);text-align:center">
-        <p style="font-family:'Cormorant Garamond',serif;font-size:0.75rem;font-style:italic;letter-spacing:0.14em;color:rgba(201,160,122,0.4)">Including a number of confidential private clients in UAE and Qatar.</p>
+        <p class="clients-note">Including a number of confidential private clients in the UAE and Qatar.</p>
       </div>
     </div>
   </div>
@@ -587,11 +580,170 @@
 
     <!-- LEFT: Info -->
     <div class="contact-left">
-      <p class="eyebrow" style="color:var(--copper)">Get in Touch</p>
+      <p class="eyebrow eyebrow--dark">Get in Touch</p>
       <h2 class="display-title" style="color:var(--parchment)">Begin Your <em>Commission</em></h2>
       <p class="contact-sub">Whether you have detailed plans or simply a vision, our team is ready to bring your ironwork to life. Reach out — and let's craft something extraordinary together.</p>
 
-      <div class="footer-details">
+      <div class="contact-details">
+        <div class="c-detail">
+          <div class="c-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="c-lbl">Workshop Address</div>
+            <div class="c-val">Industrial Area, Behind Nissan Showroom<br>Umm Al Quwain, UAE</div>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="c-lbl">Registered Office</div>
+            <div class="c-val">Office A-16, Al Khabeesi, Deira<br>Dubai, UAE<small>Star Wrought Iron (L.L.C.) · Trade Licence No. 301117</small></div>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015.19 12.9a19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="c-lbl">Phone</div>
+            <div class="c-val"><a href="tel:+971506454953">050 645 4953</a> / <a href="tel:+971526588117">052 658 8117</a><small>M. Saqib, Assistant Manager — main contact for projects</small><a href="tel:+97143391715">+971 4 339 1715</a><small>Office</small></div>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="c-lbl">Email</div>
+            <div class="c-val"><a href="mailto:info@starwroughtiron.ae">info@starwroughtiron.ae</a></div>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          </div>
+          <div>
+            <div class="c-lbl">Working Hours</div>
+            <div class="c-val">Saturday – Thursday: 8:00 AM – 6:00 PM<br>Friday: Closed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAP: not loaded until the visitor accepts non-essential cookies (consent.js).
+           The embed URL lives in data-map-src so nothing is requested from Google before consent. -->
+      <div class="map-block" style="margin-top:1.5rem" data-map-consent
+           data-map-title="Map showing the Star Wrought Iron workshop, Industrial Area, behind Nissan Showroom, Umm Al Quwain"
+           data-map-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14380.5!2d55.5536!3d25.5641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f5c6a1d3e5ab%3A0x0!2zVW1tIEFsIFF1d3dhaW4gSW5kdXN0cmlhbCBBcmVh!5e0!3m2!1sen!2sae!4v1">
+        <div class="map-consent" data-map-placeholder>
+          <p><strong>Map blocked to protect your privacy.</strong> Loading the Google Map lets Google set cookies and see your IP address. Choosing “Load map” also allows non-essential cookies. See our <a href="cookie-policy.html">Cookie Policy</a>.</p>
+          <button type="button" class="btn-primary" data-map-load>Load map</button>
+        </div>
+        <a href="https://www.google.com/maps/search/Umm+Al+Quwain+Industrial+Area+Behind+Nissan+Showroom+UAE" target="_blank" rel="noopener noreferrer" class="map-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Get Directions on Google Maps (opens in a new tab)
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+<form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST" aria-labelledby="form-heading">
+  <h3 id="form-heading" class="visually-hidden">Send us an enquiry</h3>
+
+  <!-- No-JavaScript fallback redirect. With JavaScript, SWI2.js sends the form in the background
+       and opens ThankYou.html itself once Formspree accepts it.
+       Recipients are configured in the Formspree dashboard (a "_to" field is ignored by Formspree,
+       and it exposed a personal e-mail address in the page source, so it has been removed). -->
+  <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/ThankYou.html">
+  <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
+
+  <p class="form-note" id="form-req-note">Fields marked <span class="req" aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+
+  <div class="form-row">
+    <div class="fg">
+      <label class="flbl" for="firstName">First name <span class="req" aria-hidden="true">*</span></label>
+      <input class="fi" id="firstName" type="text" name="firstName" autocomplete="given-name" placeholder="e.g. Ahmed" required aria-required="true">
+    </div>
+    <div class="fg">
+      <label class="flbl" for="lastName">Last name <span class="req" aria-hidden="true">*</span></label>
+      <input class="fi" id="lastName" type="text" name="lastName" autocomplete="family-name" placeholder="e.g. Al Mansoori" required aria-required="true">
+    </div>
+  </div>
+
+  <div class="fg">
+    <label class="flbl" for="email">Email address <span class="req" aria-hidden="true">*</span></label>
+    <input class="fi" id="email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required aria-required="true">
+  </div>
+
+  <div class="fg">
+    <label class="flbl" for="phone">Phone number <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+    <input class="fi" id="phone" type="tel" name="phone" autocomplete="tel" placeholder="+971 50 000 0000">
+  </div>
+
+  <div class="fg">
+    <label class="flbl" for="projectType">Project type <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+    <select class="fi" id="projectType" name="projectType">
+      <option value="">Select a service…</option>
+      <option>Gates &amp; Entrances</option>
+      <option>Staircases &amp; Railings</option>
+      <option>Doors &amp; Screens</option>
+      <option>Furniture &amp; Décor</option>
+      <option>Restoration</option>
+      <option>Custom Commission</option>
+    </select>
+  </div>
+
+  <div class="fg">
+    <label class="flbl" for="location">Location / Emirate <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+    <input class="fi" id="location" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi…">
+  </div>
+
+  <div class="fg">
+    <label class="flbl" for="message">Project details <span class="req" aria-hidden="true">*</span></label>
+    <textarea class="fi" id="message" name="message" placeholder="Tell us about your vision…" rows="6" required aria-required="true"></textarea>
+  </div>
+
+  <!-- Spam protection (hidden from people and assistive tech) -->
+  <div style="display:none" aria-hidden="true">
+    <label for="_gotcha">Leave this field empty</label>
+    <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+  </div>
+
+  <div class="consent-row">
+    <!-- The ticked box is submitted with the enquiry (privacyConsent), so there is a record of consent. -->
+    <input type="checkbox" id="consent" name="privacyConsent" value="Yes - agreed to Privacy Policy (version dated 30 September 2026)" required aria-required="true" aria-describedby="consent-error">
+    <label for="consent">I have read and agree to the <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy<span class="visually-hidden"> (opens in a new tab)</span></a> and consent to Star Wrought Iron processing my personal data to respond to this enquiry. <span class="req" aria-hidden="true">*</span></label>
+  </div>
+  <p class="field-error" id="consent-error" hidden>Please tick the box to confirm you agree, so we can respond to your enquiry.</p>
+
+  <button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry</button>
+
+  <div id="form-status" class="form-status" role="status" aria-live="polite" hidden style="margin-top:0.4rem"></div>
+</form>
+  </div>
+</section>
+</main>
+
+<!-- === FOOTER === -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Star ✦ Wrought Iron</div>
+      <div class="footer-brand-tag">"Custom wrought iron and metal fabrications since 1990."</div>
+    </div>
+    <div>
+      <div class="footer-social-label">Follow our work</div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://wa.me/971526588117" target="_blank" rel="noopener noreferrer" aria-label="Message Star Wrought Iron on WhatsApp (opens in a new tab)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2a9.94 9.94 0 00-8.5 15.2L2 22l4.95-1.45A9.94 9.94 0 1012 2zm0 18.06a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.06 1.01 1.02-2.99-.19-.31A8.06 8.06 0 1112 20.06zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.77.95-.14.17-.28.19-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.36-1.69-.14-.24-.01-.37.11-.5.11-.11.24-.28.37-.43.12-.14.16-.24.24-.4.08-.17.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47a.9.9 0 00-.65.3c-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-details">
     <div class="footer-col">
       <h2>Company</h2>
       <p>Star Wrought Iron (L.L.C.)<br>
@@ -616,117 +768,28 @@
     </div>
   </div>
 
-      <!-- MAP -->
-    <div class="map-block" style="margin-top:1.5rem" data-map-consent
-         data-map-title="Map showing the Star Wrought Iron workshop, Industrial Area, behind Nissan Showroom, Umm Al Quwain"
-         data-map-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14380.5!2d55.5536!3d25.5641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f5c6a1d3e5ab%3A0x0!2zVW1tIEFsIFF1d3dhaW4gSW5kdXN0cmlhbCBBcmVh!5e0!3m2!1sen!2sae!4v1">
-      <div class="map-consent" data-map-placeholder>
-        <p><strong>Map blocked to protect your privacy.</strong> Loading the Google Map lets Google set cookies and see your IP address. Choosing “Load map” also allows non-essential cookies. See our <a href="cookie-policy.html">Cookie Policy</a>.</p>
-        <button type="button" class="btn-primary" data-map-load>Load map</button>
-      </div>
-      <a href="https://www.google.com/maps/search/Umm+Al+Quwain+Industrial+Area+Behind+Nissan+Showroom+UAE" target="_blank" rel="noopener noreferrer" class="map-link">
-        Get Directions on Google Maps
-      </a>
-    </div>
-</div>
+  <ul class="footer-legal" aria-label="Legal">
+    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+    <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
+    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+    <li><a href="refund-policy.html">Refund &amp; Cancellation Policy</a></li>
+    <li><button type="button" data-cookie-settings>Cookie settings</button></li>
+  </ul>
 
-    <!-- RIGHT: Form -->
-<form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
-    
-    <!-- Add this line here -->
-    <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/ThankYou.html">
-
-    <!-- Main email(s) -->
-  <input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
-
-  <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
-
-  <!-- Redirect to Thank You page after successful submission -->
-  <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/thank-you.html">
-
-  <div class="form-row">
-      <div class="fg">
-          <label class="flbl">First Name</label>
-          <input class="fi" type="text" name="firstName" placeholder="First Name" required>
-      </div>
-      <div class="fg">
-          <label class="flbl">Last Name</label>
-          <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
-      </div>
-  </div>
-
-  <div class="fg">
-      <label class="flbl">Email Address</label>
-      <input class="fi" type="email" name="email" placeholder="your@email.com" required>
-  </div>
-
-  <div class="fg">
-      <label class="flbl">Phone Number</label>
-      <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
-  </div>
-
-  <div class="fg">
-      <label class="flbl">Project Type</label>
-      <select class="fi" name="projectType">
-          <option value="">Select a service...</option>
-          <option>Gates & Entrances</option>
-          <option>Staircases & Railings</option>
-          <option>Doors & Screens</option>
-          <option>Furniture & Décor</option>
-          <option>Restoration</option>
-          <option>Custom Commission</option>
-      </select>
-  </div>
-
-<div class="fg">
-    <label class="flbl">Location / Emirate</label>
-    <input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi...">
-</div>
-
-<div class="fg">
-    <label class="flbl">Project Details</label>
-    <textarea class="fi" name="message" placeholder="Tell us about your vision..." rows="6" required></textarea>
-</div>
-
-<!-- Spam protection -->
-<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-
-<button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry →</button>
-
-<div id="form-status" class="form-status" style="display:none; margin-top:15px;"></div>
-</form>
-  </div>
-</section>
-
-<!-- === FOOTER === --> 
-<footer>
-  <div class="footer-top">
-    <div>
-      <div class="footer-brand-name">Star ✦ Wrought Iron</div>
-      <div class="footer-brand-tag">"Custom handmade metal fabrications since 1990."</div>
-    </div>
-    <div>
-      <div class="footer-social-label">Follow our work</div>
-      <div class="footer-social">
-        <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-        <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-        <a href="https://wa.me/971526588117" target="_blank" rel="noopener noreferrer" aria-label="Message Star Wrought Iron on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.94 9.94 0 00-8.5 15.2L2 22l4.95-1.45A9.94 9.94 0 1012 2zm0 18.06a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.06 1.01 1.02-2.99-.19-.31A8.06 8.06 0 1112 20.06zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.77.95-.14.17-.28.19-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.36-1.69-.14-.24-.01-.37.11-.5.11-.11.24-.28.37-.43.12-.14.16-.24.24-.4.08-.17.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47a.9.9 0 00-.65.3c-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg></a>
-      </div>
-    </div>
-  </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 1990 – 2025 Star Wrought Iron LLC. All rights reserved.</span>
-    <span class="footer-uae">Umm Al Quwain · United Arab Emirates</span>
+    <span class="footer-copy">© 2026 Star Wrought Iron (L.L.C.). All rights reserved.</span>
+    <span class="footer-uae">Dubai · Umm Al Quwain · United Arab Emirates</span>
   </div>
 </footer>
 
 <!-- === WHATSAPP FLOATING BUTTON === -->
+<aside aria-label="WhatsApp chat">
 <a class="wa-float" id="wa-float"
-   href="https://wa.me/971589469267?text=Hello%20Star%20Wrought%20Iron%2C%20I%27d%20like%20to%20enquire%20about%20a%20custom%20ironwork%20commission."
-   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+   href="https://wa.me/971526588117?text=Hello%20Star%20Wrought%20Iron%2C%20I%27d%20like%20to%20enquire%20about%20a%20custom%20ironwork%20commission."
+   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp (opens in a new tab)">
   <span class="wa-float-icon">
     <span class="wa-float-pulse"></span>
-    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false">
       <path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.69 4.68 1.885 6.6L3 29l7.09-2.34a12.44 12.44 0 0 0 5.91 1.5h.004c6.905 0 12.5-5.596 12.5-12.5C28.504 8.596 22.906 3 16.001 3zm0 22.77h-.003a10.34 10.34 0 0 1-5.27-1.44l-.378-.225-3.916 1.293 1.31-3.815-.246-.39a10.24 10.24 0 0 1-1.573-5.49c0-5.68 4.622-10.3 10.303-10.3 2.752 0 5.339 1.073 7.284 3.02a10.23 10.23 0 0 1 3.017 7.29c0 5.68-4.623 10.303-10.303 10.303-.075 0-.15 0-.225-.246zm5.646-7.71c-.31-.155-1.83-.903-2.113-1.006-.284-.104-.49-.155-.696.155-.207.31-.8 1.006-.98 1.213-.18.207-.362.233-.672.078-.31-.155-1.31-.483-2.494-1.538-.922-.822-1.545-1.838-1.726-2.148-.18-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.18.207-.31.31-.517.104-.207.052-.388-.026-.543-.078-.155-.696-1.677-.954-2.297-.251-.603-.507-.522-.696-.532-.18-.008-.388-.01-.595-.01a1.14 1.14 0 0 0-.826.388c-.284.31-1.084 1.06-1.084 2.583s1.11 2.997 1.265 3.204c.155.207 2.185 3.337 5.294 4.68.74.32 1.317.51 1.767.653.742.236 1.418.203 1.952.123.596-.089 1.83-.748 2.088-1.47.258-.723.258-1.343.18-1.47-.077-.128-.283-.207-.593-.362z"/>
     </svg>
   </span>
@@ -735,7 +798,9 @@
     <span class="wa-float-sub">WhatsApp</span>
   </span>
 </a>
+</aside>
 
+<script src="consent.js"></script>
 <script src="SWI2.js"></script>
 </body>
 </html>
