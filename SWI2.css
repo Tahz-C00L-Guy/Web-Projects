@@ -26,7 +26,7 @@
 
 /* --- BASE --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: auto; font-size: 16px; }
 body { font-family: var(--ff-body); background: var(--offwhite); color: var(--text-body); overflow-x: hidden; line-height: 1.7; }
 img, svg { display: block; }
 a { text-decoration: none; }
@@ -116,7 +116,7 @@ nav {
 .nav-mobile-panel a:hover { color: var(--copper); }
 
 /* --- HERO --- */
-#hero {
+#swi {
   min-height: 100vh; background: var(--forge);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -471,7 +471,7 @@ nav {
 .divider-wrap svg { width: 100%; height: 44px; }
 
 /* --- ABOUT --- */
-#about { background: var(--parchment); }
+#about_us { background: var(--parchment); }
 .about-layout { display: grid; grid-template-columns: 55fr 45fr; gap: 6rem; align-items: center; }
 .about-body { margin-bottom: 1rem; }
 .about-pull {
@@ -512,7 +512,7 @@ nav {
 .about-badge-txt { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(240,232,224,0.7); display: block; margin-top: 3px; }
 
 /* --- SERVICES --- */
-#services { background: var(--offwhite); }
+#our_services { background: var(--offwhite); }
 .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem; }
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
 a.svc-card {
@@ -620,7 +620,7 @@ a.svc-card {
 }
 
 /* --- PROCESS --- */
-#process { background: var(--forge); padding: 6rem 2rem; }
+#our_process { background: var(--forge); padding: 6rem 2rem; }
 .process-title { color: var(--parchment); }
 .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 3.5rem; position: relative; }
 .process-steps::before {
@@ -692,7 +692,7 @@ a.svc-card {
 }
 
 /* --- CONTACT --- */
-#contact { background: var(--forge-mid); padding: 7rem 2rem; }
+#contact_us { background: var(--forge-mid); padding: 7rem 2rem; }
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
 .contact-left .display-title { color: var(--parchment); }
 .contact-sub { font-size: 0.87rem; line-height: 1.85; color: rgba(240,232,224,0.45); margin-bottom: 2.5rem; max-width: 440px; }
@@ -946,10 +946,10 @@ footer {
 
   /* --- Section spacing --- */
   .section { padding: 4rem 1.25rem; }
-  #process { padding: 4rem 1.25rem; }
+  #our_process { padding: 4rem 1.25rem; }
   #testimonials { padding: 4rem 1.25rem !important; }
   #clients { padding: 3.5rem 1.25rem; }
-  #contact { padding: 4rem 1.25rem !important; }
+  #contact_us { padding: 4rem 1.25rem !important; }
   footer { padding: 2.5rem 1.25rem; }
 
   .hero-eyebrow { font-size: 0.58rem; letter-spacing: 0.2em; }
@@ -964,7 +964,7 @@ footer {
   .footer-social { gap: 8px; }
 
   /* --- Hero --- */
-  #hero { padding: 6rem 1.25rem 4rem; min-height: 92vh; }
+  #swi { padding: 6rem 1.25rem 4rem; min-height: 92vh; }
   .hero-h1, .hero-h1-italic { font-size: clamp(2.4rem, 13vw, 3.4rem); }
   .hero-tagline { font-size: 0.95rem; max-width: 320px; }
   .hero-actions { flex-direction: column; width: 100%; gap: 0.9rem; }
@@ -1088,7 +1088,7 @@ footer {
    of the main site rather than a separate style system.
    ============================================================ */
 
-/* Secondary page hero (shorter than the 100vh homepage #hero,
+/* Secondary page hero (shorter than the 100vh homepage #swi,
    built from the same hero-grid-bg / hero-glow / hero-eyebrow
    primitives already defined above). */
 .page-hero {
