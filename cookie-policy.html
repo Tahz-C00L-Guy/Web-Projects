@@ -1,131 +1,191 @@
-/* ================================================================
-   STAR WROUGHT IRON — COOKIE / THIRD-PARTY CONSENT
-   ----------------------------------------------------------------
-   * Strictly-necessary only by default. The site sets no cookies of
-     its own; the only thing stored is the visitor's choice, in
-     localStorage under KEY (that is "strictly necessary" storage).
-   * The one non-essential item is the Google Maps embed. Nothing is
-     requested from Google until the visitor accepts, either through
-     the banner or the "Load map" button (which records the same
-     choice). "Reject" keeps it blocked and the choice is remembered.
-   * Choice is re-asked after 12 months, and can be changed any time
-     through any element with [data-cookie-settings] (footer link).
-   * If localStorage is unavailable (private mode etc.) the banner
-     simply shows on each page load; nothing breaks.
-   To add another non-essential embed later: give its container
-   data-consent-embed and handle it in applyConsent().
-   ================================================================ */
-(function () {
-  'use strict';
-  var KEY = 'swi_cookie_consent';
-  var VERSION = 1;
-  var MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
-  var banner = null;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie Policy | Star Wrought Iron</title>
+    <meta name="description" content="Star Wrought Iron Cookie Policy — strictly necessary storage by default; Google Maps embed only with your consent.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
+    <link rel="preconnect" href="https://res.cloudinary.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="SWI2.css" rel="stylesheet">
+</head>
+<body>
 
-  function read() {
-    try {
-      var raw = window.localStorage.getItem(KEY);
-      if (!raw) return null;
-      var c = JSON.parse(raw);
-      if (!c || c.v !== VERSION || typeof c.nonEssential !== 'boolean') return null;
-      if (Date.now() - c.ts > MAX_AGE_MS) return null;
-      return c;
-    } catch (e) { return null; }
-  }
-  function write(nonEssential) {
-    try {
-      window.localStorage.setItem(KEY, JSON.stringify({ v: VERSION, nonEssential: nonEssential, ts: Date.now() }));
-    } catch (e) { /* storage blocked: choice applies for this page view only */ }
-  }
+<a class="skip-link" href="#main">Skip to main content</a>
 
-  /* ---------- Google Maps gate ---------- */
-  function applyConsent(allowed) {
-    var boxes = document.querySelectorAll('[data-map-consent]');
-    Array.prototype.forEach.call(boxes, function (box) {
-      var placeholder = box.querySelector('[data-map-placeholder]');
-      var frame = box.querySelector('iframe');
-      if (allowed) {
-        if (!frame) {
-          frame = document.createElement('iframe');
-          frame.title = box.getAttribute('data-map-title') || 'Map';
-          frame.setAttribute('allowfullscreen', '');
-          frame.setAttribute('loading', 'lazy');
-          frame.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-          frame.src = box.getAttribute('data-map-src');
-          if (placeholder) box.insertBefore(frame, placeholder);
-          else box.appendChild(frame);
-        }
-        frame.hidden = false;
-        if (placeholder) placeholder.hidden = true;
-      } else {
-        if (frame) frame.parentNode.removeChild(frame);   // also drops Google's session
-        if (placeholder) placeholder.hidden = false;
-      }
-    });
-  }
+<!-- === NAV === -->
+<nav aria-label="Main">
+  <div class="nav-brand">
+    <a href="index.html#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <img src="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" alt="" style="height:30px;width:auto;object-fit:contain;opacity:0.95">
+      <span class="nav-wordmark">Star<span aria-hidden="true">✦</span>Wrought Iron<span class="visually-hidden"> — home</span></span>
+    </a>
+    <div class="nav-social">
+      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html#hero">Home</a></li>
+    <li><a href="index.html#about">Heritage</a></li>
+    <li><a href="index.html#services">Specialisations</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile-panel">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  /* ---------- Banner ---------- */
-  function build() {
-    var el = document.createElement('div');
-    el.className = 'cc-banner';
-    el.id = 'cookie-banner';
-    el.setAttribute('role', 'region');
-    el.setAttribute('aria-label', 'Cookie notice');
-    el.hidden = true;
-    el.innerHTML =
-      '<h2 class="cc-title" id="cc-title">Your privacy choices</h2>' +
-      '<p class="cc-text">We only use strictly necessary storage to run this site. ' +
-      'Our contact map is provided by Google Maps, which may set cookies and receive your IP address, ' +
-      'so it stays blocked unless you allow non-essential cookies. ' +
-      'Read our <a href="cookie-policy.html">Cookie Policy</a> and <a href="privacy-policy.html">Privacy Policy</a>.</p>' +
-      '<div class="cc-actions">' +
-        '<button type="button" class="cc-btn cc-btn--reject" data-cc="reject">Reject non-essential</button>' +
-        '<button type="button" class="cc-btn cc-btn--accept" data-cc="accept">Accept non-essential</button>' +
-      '</div>';
-    el.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-cc]');
-      if (!b) return;
-      choose(b.getAttribute('data-cc') === 'accept', true);
-    });
-    document.body.appendChild(el);
-    return el;
-  }
-  function show(focus) {
-    if (!banner) banner = build();
-    banner.hidden = false;
-    document.body.classList.add('cc-open');
-    if (focus) { var first = banner.querySelector('[data-cc]'); if (first) first.focus(); }
-  }
-  function hide() {
-    if (banner) banner.hidden = true;
-    document.body.classList.remove('cc-open');
-  }
-  function choose(allowed, fromBanner) {
-    write(allowed);
-    applyConsent(allowed);
-    hide();
-    // Return focus somewhere sensible when the banner was opened from the footer link
-    if (!fromBanner) return;
-    var opener = document.querySelector('[data-cookie-settings]');
-    if (opener && document.activeElement && document.activeElement.closest && document.activeElement.closest('.cc-banner')) {
-      try { opener.focus(); } catch (e) {}
-    }
-  }
+<div class="nav-mobile-panel" id="nav-mobile-panel" role="navigation" aria-label="Mobile menu">
+  <a href="index.html#hero">Home</a>
+  <a href="index.html#about">Heritage</a>
+  <a href="index.html#services">Specialisations</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="index.html#process">Process</a>
+  <a href="index.html#contact">Contact</a>
+  <a class="nav-legal" href="privacy-policy.html">Privacy Policy</a>
+  <a class="nav-legal" href="terms-and-conditions.html">Terms &amp; Conditions</a>
+  <a class="nav-legal" href="cookie-policy.html">Cookie Policy</a>
+  <a class="nav-legal" href="refund-policy.html">Refund &amp; Cancellation Policy</a>
+</div>
 
-  function init() {
-    var c = read();
-    applyConsent(!!(c && c.nonEssential));
-    if (!c) show(false);   // don't steal focus on first paint: banner is non-modal
+<main id="main" tabindex="-1">
+<header class="legal-hero has-decor">
+  <div class="decor" aria-hidden="true">
+    <span class="blob blob--foil blob--petal1" style="--s:460px; top:-200px; left:-180px"></span>
+    <span class="blob blob--glow blob--petal3" style="--s:380px; bottom:-170px; right:-150px"></span>
+  </div>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a><span class="crumb-sep" aria-hidden="true">／</span><span class="crumb-current" aria-current="page">Cookie Policy</span>
+  </nav>
+  <h1>Cookie Policy</h1>
+  <p>What we store on your device, what needs your consent, and how to change your choice.</p>
+</header>
 
-    document.addEventListener('click', function (e) {
-      var s = e.target.closest('[data-cookie-settings]');
-      if (s) { e.preventDefault(); show(true); return; }
-      var m = e.target.closest('[data-map-load]');
-      if (m) { e.preventDefault(); choose(true, false); }    // "Load map" = accepts non-essential (explained beside the button)
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && banner && !banner.hidden && read()) hide();  // only dismissable if a choice already exists
-    });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-})();
+<div class="legal-page">
+  <div class="legal-wrap">
+    <p class="legal-meta">Last updated: 30 September 2026 · Version 1.0</p>
+    <div class="legal-toc" role="navigation" aria-label="On this page">
+      <h2>Contents</h2>
+      <ol><li><a href="#s-what">What are cookies?</a></li><li><a href="#s-summary">In short</a></li><li><a href="#s-types">The cookies and storage we use</a></li><li><a href="#s-maps">Google Maps</a></li><li><a href="#s-control">How to manage your choice</a></li><li><a href="#s-changes">Changes and contact</a></li><li><a href="#arabic">Arabic version</a></li></ol>
+    </div>
+    <section id="s-what"><h2>1. What are cookies?</h2>
+<p>Cookies are small text files that a website or a third-party service saves on your device. Similar technologies, such as your browser’s local storage, do the same job. This Cookie Policy explains what Star Wrought Iron (L.L.C.) (<span lang="ar" dir="rtl">النجمة للحديد المشغول (ش.ذ.م.م)</span>), a limited liability company licensed by Dubai Economy &amp; Tourism (Trade Licence No. 301117; Commercial Register No. 77587) (“<strong>we</strong>”) uses on <strong>swi.ae</strong> and how you control it. It should be read with our <a href="privacy-policy.html">Privacy Policy</a>.</p></section>
+<section id="s-summary"><h2>2. In short</h2>
+<ul>
+  <li>By default we use <strong>strictly necessary</strong> storage only — no analytics, no advertising, no tracking cookies.</li>
+  <li>The only non-essential item is the <strong>Google Maps</strong> embed on our contact section. It stays blocked until you allow it.</li>
+  <li>You can accept, reject, or change your choice at any time using “Cookie settings” in the footer.</li>
+</ul></section>
+<section id="s-types"><h2>3. The cookies and storage we use</h2>
+<div class="legal-table-wrap" tabindex="0" role="region" aria-label="Table 1 (scrolls sideways on small screens)"><table class="legal-table">
+<thead><tr><th scope="col">Category</th><th scope="col">Name / source</th><th scope="col">Purpose</th><th scope="col">Duration</th><th scope="col">Consent needed?</th></tr></thead>
+<tbody>
+<tr><td><strong>Strictly necessary</strong></td><td><code>swi_cookie_consent</code> (local storage, set by this Website)</td><td>Remembers whether you accepted or rejected non-essential cookies so we do not ask again on every page</td><td>Up to 12 months</td><td>No — it is needed to respect your choice</td></tr>
+<tr><td><strong>Non-essential (third-party)</strong></td><td>Google Maps embed (google.com)</td><td>Shows an interactive map of our workshop. Google may set or read cookies, and receives your IP address and browser data, when the map loads</td><td>Set by Google — see Google’s <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">cookie information<span class="visually-hidden"> (opens in a new tab)</span></a></td><td><strong>Yes</strong> — loads only after you click “Accept non-essential” or “Load map”</td></tr>
+</tbody></table></div>
+<p>We do not use analytics, advertising, social-media tracking pixels or profiling cookies. Our typefaces are loaded from Google Fonts, which does not set cookies but does receive your IP address and browser details when a page opens. The image host (Cloudinary) and our web host (Vercel) likewise receive your IP address when they send you a file — see the Privacy Policy. Links to Instagram, Facebook and WhatsApp are ordinary links; those services set their own cookies only after you leave our Website.</p></section>
+<section id="s-maps"><h2>4. Google Maps</h2>
+<p>Until you consent, the contact section shows a placeholder instead of the map, and your browser makes no request to Google. If you click “Accept non-essential” in the banner or “Load map” on the placeholder, the map appears and Google’s cookies may be set. A “Get directions” link to Google Maps is always available; it opens Google in a new tab and only sends data when you click it. Google’s use of data is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google’s Privacy Policy<span class="visually-hidden"> (opens in a new tab)</span></a>.</p></section>
+<section id="s-control"><h2>5. How to manage your choice</h2>
+<ul>
+  <li><strong>On this Website:</strong> select <button type="button" data-cookie-settings style="background:none;border:0;padding:0;font:inherit;color:var(--copper-ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer">Cookie settings</button> here or in the footer, then choose Accept or Reject. Rejecting removes the map and keeps it blocked.</li>
+  <li><strong>In your browser:</strong> you can delete cookies and site data or block cookies in your browser settings. Clearing this site’s data also clears your saved choice, and the banner will appear again.</li>
+  <li>Rejecting non-essential cookies does not affect how you can use the rest of the Website or contact us.</li>
+</ul></section>
+<section id="s-changes"><h2>6. Changes and contact</h2>
+<p>If we add any new non-essential cookie or third-party service, we will update this policy and ask for your consent first. Questions? Contact Star Wrought Iron (L.L.C.) (<span lang="ar" dir="rtl">النجمة للحديد المشغول (ش.ذ.م.م)</span>), a limited liability company licensed by Dubai Economy &amp; Tourism (Trade Licence No. 301117; Commercial Register No. 77587) — email <a href="mailto:info@starwroughtiron.ae">info@starwroughtiron.ae</a>, telephone <a href="tel:+97143391715">+971 4 339 1715</a> or mobile <a href="tel:+971526588117">052 658 8117</a>.</p></section>
+
+    <section class="legal-ar" lang="en" id="arabic">
+  <h2>Arabic version</h2>
+  <p>An Arabic version of this document is available on request — please contact us using the details above. Until an Arabic version is published, the English version is the version we provide; if you need the Arabic text to understand your rights, please ask us before you rely on this document.</p>
+  <p lang="ar" dir="rtl">النسخة العربية من هذه الوثيقة متاحة عند الطلب. يُرجى التواصل معنا عبر بيانات الاتصال المذكورة أعلاه.</p>
+</section>
+    <p class="legal-sitenav"><a href="privacy-policy.html">Privacy Policy</a> <a href="terms-and-conditions.html">Terms &amp; Conditions</a> <a href="cookie-policy.html">Cookie Policy</a> <a href="refund-policy.html">Refund &amp; Cancellation Policy</a></p>
+  </div>
+</div>
+</main>
+
+<!-- === FOOTER === -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Star ✦ Wrought Iron</div>
+      <div class="footer-brand-tag">"Custom wrought iron and metal fabrications since 1990."</div>
+    </div>
+    <div>
+      <div class="footer-social-label">Follow our work</div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Instagram (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Star Wrought Iron on Facebook (opens in a new tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://wa.me/971526588117" target="_blank" rel="noopener noreferrer" aria-label="Message Star Wrought Iron on WhatsApp (opens in a new tab)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2a9.94 9.94 0 00-8.5 15.2L2 22l4.95-1.45A9.94 9.94 0 1012 2zm0 18.06a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.06 1.01 1.02-2.99-.19-.31A8.06 8.06 0 1112 20.06zm4.45-6.06c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.77.95-.14.17-.28.19-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.36-1.69-.14-.24-.01-.37.11-.5.11-.11.24-.28.37-.43.12-.14.16-.24.24-.4.08-.17.04-.31-.02-.43-.06-.12-.55-1.32-.75-1.81-.2-.47-.4-.41-.55-.42h-.47a.9.9 0 00-.65.3c-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-details">
+    <div class="footer-col">
+      <h2>Company</h2>
+      <p>Star Wrought Iron (L.L.C.)<br>
+      <span lang="ar" dir="rtl">النجمة للحديد المشغول (ش.ذ.م.م)</span><br>
+      Trade Licence No. 301117<br>
+      Dubai Economy &amp; Tourism<br>
+      Managing Director: Muhammad Sajid Muhammad Sadiq</p>
+    </div>
+    <div class="footer-col">
+      <h2>Addresses</h2>
+      <address>
+        <strong>Registered office:</strong><br>Office A-16, Al Khabeesi, Deira, Dubai, UAE<br>
+        <strong>Workshop:</strong><br>Industrial Area, Behind Nissan Showroom, Umm Al Quwain, UAE
+      </address>
+    </div>
+    <div class="footer-col">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:info@starwroughtiron.ae">info@starwroughtiron.ae</a><br>
+      Projects (M. Saqib): <a href="tel:+971506454953">050 645 4953</a> · <a href="tel:+971526588117">052 658 8117</a><br>
+      Office: <a href="tel:+97143391715">+971 4 339 1715</a><br>
+      Sat – Thu, 8:00 AM – 6:00 PM · Fri closed</p>
+    </div>
+  </div>
+
+  <ul class="footer-legal" aria-label="Legal">
+    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+    <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
+    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+    <li><a href="refund-policy.html">Refund &amp; Cancellation Policy</a></li>
+    <li><button type="button" data-cookie-settings>Cookie settings</button></li>
+  </ul>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Star Wrought Iron (L.L.C.). All rights reserved.</span>
+    <span class="footer-uae">Dubai · Umm Al Quwain · United Arab Emirates</span>
+  </div>
+</footer>
+
+<!-- === WHATSAPP FLOATING BUTTON === -->
+<aside aria-label="WhatsApp chat">
+<a class="wa-float" id="wa-float"
+   href="https://wa.me/971526588117?text=Hello%20Star%20Wrought%20Iron%2C%20I%27d%20like%20to%20enquire%20about%20a%20custom%20ironwork%20commission."
+   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp (opens in a new tab)">
+  <span class="wa-float-icon">
+    <span class="wa-float-pulse"></span>
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false">
+      <path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.69 4.68 1.885 6.6L3 29l7.09-2.34a12.44 12.44 0 0 0 5.91 1.5h.004c6.905 0 12.5-5.596 12.5-12.5C28.504 8.596 22.906 3 16.001 3zm0 22.77h-.003a10.34 10.34 0 0 1-5.27-1.44l-.378-.225-3.916 1.293 1.31-3.815-.246-.39a10.24 10.24 0 0 1-1.573-5.49c0-5.68 4.622-10.3 10.303-10.3 2.752 0 5.339 1.073 7.284 3.02a10.23 10.23 0 0 1 3.017 7.29c0 5.68-4.623 10.303-10.303 10.303-.075 0-.15 0-.225-.246zm5.646-7.71c-.31-.155-1.83-.903-2.113-1.006-.284-.104-.49-.155-.696.155-.207.31-.8 1.006-.98 1.213-.18.207-.362.233-.672.078-.31-.155-1.31-.483-2.494-1.538-.922-.822-1.545-1.838-1.726-2.148-.18-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.18.207-.31.31-.517.104-.207.052-.388-.026-.543-.078-.155-.696-1.677-.954-2.297-.251-.603-.507-.522-.696-.532-.18-.008-.388-.01-.595-.01a1.14 1.14 0 0 0-.826.388c-.284.31-1.084 1.06-1.084 2.583s1.11 2.997 1.265 3.204c.155.207 2.185 3.337 5.294 4.68.74.32 1.317.51 1.767.653.742.236 1.418.203 1.952.123.596-.089 1.83-.748 2.088-1.47.258-.723.258-1.343.18-1.47-.077-.128-.283-.207-.593-.362z"/>
+    </svg>
+  </span>
+  <span class="wa-float-text">
+    <span class="wa-float-label">Chat with us</span>
+    <span class="wa-float-sub">WhatsApp</span>
+  </span>
+</a>
+</aside>
+
+<script src="consent.js"></script>
+<script src="SWI2.js"></script>
+</body>
+</html>
